@@ -16,4 +16,5 @@ class MaintenanceRequestImages extends Model
     {
         return $this->belongsTo(MaintenanceRequest::class);
     }
+    
 }

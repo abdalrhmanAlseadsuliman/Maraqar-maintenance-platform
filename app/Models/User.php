@@ -17,8 +17,8 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
-    protected $fillable = ['name', 'phone', 'email','password', 'city', 'role'];
-
+    // protected $fillable = ['name', 'phone', 'email','password', 'city', 'role'];
+    protected $guarded = [];
     public function properties()
     {
         return $this->hasMany(Property::class);
