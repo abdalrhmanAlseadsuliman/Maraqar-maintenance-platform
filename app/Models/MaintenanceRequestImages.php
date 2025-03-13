@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\MaintenanceRequest;
+use App\Models\MaintenanceRequests;
 
 class MaintenanceRequestImages extends Model
 {
@@ -14,6 +14,17 @@ class MaintenanceRequestImages extends Model
 
     public function maintenanceRequest()
     {
-        return $this->belongsTo(MaintenanceRequest::class);
+        return $this->belongsTo(MaintenanceRequests::class, 'maintenance_request_id');
     }
+
+    protected static function boot()
+{
+    parent::boot();
+
+    static::creating(function ($image) {
+        if (!$image->maintenance_request_id) {
+            $image->maintenance_request_id = request()->route('record') ?? null;
+        }
+    });
+}
 }

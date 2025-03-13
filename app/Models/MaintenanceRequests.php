@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\MaintenanceSolutionImages;
+use App\Models\MaintenanceRequestImages;
+
 
 
 class MaintenanceRequests extends Model
@@ -23,12 +26,13 @@ class MaintenanceRequests extends Model
 
     public function images()
     {
-        return $this->hasMany(MaintenanceRequestImage::class);
+        return $this->hasMany(MaintenanceRequestImages::class, 'maintenance_request_id');
     }
+    
 
     public function solutionImages()
     {
-        return $this->hasMany(MaintenanceSolutionImage::class);
+        return $this->hasMany(MaintenanceSolutionImages::class);
     }
     //
 }

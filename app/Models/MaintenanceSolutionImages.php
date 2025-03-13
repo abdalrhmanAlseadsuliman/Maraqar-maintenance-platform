@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\MaintenanceRequest;
+use App\Models\MaintenanceRequests;
 
 class MaintenanceSolutionImages extends Model
 {
@@ -14,6 +14,6 @@ class MaintenanceSolutionImages extends Model
 
     public function maintenanceRequest()
     {
-        return $this->belongsTo(MaintenanceRequest::class);
+        return $this->belongsTo(MaintenanceRequests::class);
     }
 }
