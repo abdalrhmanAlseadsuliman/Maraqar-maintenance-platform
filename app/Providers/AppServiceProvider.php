@@ -4,6 +4,7 @@ namespace App\Providers;
 use Filament\Facades\Filament;
 use Filament\Support\Facades\FilamentAsset;
 use Filament\Support\Assets\Css;
+use Barryvdh\DomPDF\Facade;
 
 use Filament\Panel;
 use Filament\PanelProvider;
@@ -30,6 +31,8 @@ class AppServiceProvider extends ServiceProvider
             Css::make('filament-rtl', resource_path('css/filament-rtl.css')),
         ]);
 
-     
+      
+
+
     }
 }

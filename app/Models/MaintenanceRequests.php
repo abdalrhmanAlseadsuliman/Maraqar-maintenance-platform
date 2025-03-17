@@ -6,12 +6,17 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\MaintenanceSolutionImages;
 use App\Models\MaintenanceRequestImages;
+use App\Enums\RequestType;
+use Filament\Notifications\Notification;
 
 
 
 class MaintenanceRequests extends Model
 {
     use HasFactory;
+    protected $casts = [
+        'request_type' => RequestType::class,
+    ];
 
     protected $fillable = [
         'property_id', 'request_type', 'status', 'submitted_at',
@@ -28,7 +33,7 @@ class MaintenanceRequests extends Model
     {
         return $this->hasMany(MaintenanceRequestImages::class, 'maintenance_request_id');
     }
-    
+
 
     public function solutionImages()
     {

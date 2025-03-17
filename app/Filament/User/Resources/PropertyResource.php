@@ -17,13 +17,58 @@ class PropertyResource extends Resource
 {
     protected static ?string $model = Property::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-building-office-2';
+    protected static ?int $navigationSort = 1;
+    // protected static ?string $navigationLabel = 'العقارات';
+
+    public static function getPluralLabel(): string
+    {
+        return 'العقارات';
+    }
+
+    public static function getModelLabel(): string
+    {
+        return 'عقار';
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return 'إدارة العقارات';
+    }
+
+
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                //
+                Forms\Components\Select::make('user_id')
+                    ->relationship('owner', 'name')
+                    ->label('مالك العقار')
+                    ->required(),
+                Forms\Components\TextInput::make('name')
+                    ->label('اسم العقار')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('property_number')
+                    ->label('رقم العقار')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('title_deed_number')
+                    ->label('رقم صك الملكية')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('land_piece_number')
+                    ->label('رقم الارض')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('plan_number')
+                    ->label('رقم المخطط')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\DatePicker::make('sale_date')
+                    ->label('تاريخ الشراء')
+                    ->required(),
             ]);
     }
 
@@ -31,8 +76,41 @@ class PropertyResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('owner.name')
+                    ->label('مالك العقار')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('name')
+                    ->label('اسم العقار')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('property_number')
+                    ->label('رقم العقار')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('title_deed_number')
+                    ->label('رقم صك الملكية')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('land_piece_number')
+                    ->label('رقم الارض')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('plan_number')
+                    ->label('رقم المخطط')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('sale_date')
+                    ->label('تاريخ الشراء')
+                    ->date()
+                    ->sortable(),
+                // Tables\Columns\TextColumn::make('created_at')
+                //     ->dateTime()
+                //     ->sortable()
+                //     ->toggleable(isToggledHiddenByDefault: true),
+                // Tables\Columns\TextColumn::make('updated_at')
+                //     ->dateTime()
+                //     ->sortable()
+                //     ->toggleable(isToggledHiddenByDefault: true),
             ])
+            // ->headerActions([
+            //     Tables\Actions\CreateAction::make()->label('إضافة عقار جديد'),
+            // ])
+
             ->filters([
                 //
             ])
@@ -60,5 +138,12 @@ class PropertyResource extends Resource
             'create' => Pages\CreateProperty::route('/create'),
             'edit' => Pages\EditProperty::route('/{record}/edit'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->whereHas('owner', function ($query) {
+            $query->where('user_id', auth()->id()); // 🔹 تصفية الطلبات بناءً على مالك العقار
+        });
     }
 }

@@ -10,6 +10,9 @@ class ListProperties extends ListRecords
 {
     protected static string $resource = PropertyResource::class;
 
+    protected static ?string $title = 'عرض العقارات';
+
+
     protected function getHeaderActions(): array
     {
         return [

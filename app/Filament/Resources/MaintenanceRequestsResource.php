@@ -2,19 +2,26 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\MaintenanceRequestsResource\Pages;
-use App\Filament\Resources\MaintenanceRequestsResource\RelationManagers;
-use App\Models\MaintenanceRequests;
-use Filament\Tables\Columns\ImageColumn;
+// namespace App\Filament\Resources;
+
+use Mpdf\Mpdf;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Filament\Resources\Resource;
+use App\Models\MaintenanceRequests;
+use Illuminate\Support\Facades\Blade;
+use Filament\Forms\Components\Repeater;
+use Filament\Tables\Actions\BulkAction;
+use Illuminate\Database\Eloquent\Model;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Forms\Components\FileUpload;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Filament\Forms\Components\Repeater;
-use Filament\Forms\Components\FileUpload;
+use App\Filament\Resources\MaintenanceRequestsResource\Pages;
+use App\Filament\Resources\MaintenanceRequestsResource\RelationManagers;
 
 
 class MaintenanceRequestsResource extends Resource
@@ -53,13 +60,13 @@ class MaintenanceRequestsResource extends Resource
                 Forms\Components\TextInput::make('cost')
                     ->numeric()
                     ->prefix('$'),
-                    Repeater::make('images')
-                    ->relationship('images') 
+                Repeater::make('images')
+                    ->relationship('images')
                     ->schema([
                         FileUpload::make('image_path')
                             ->label('تحميل الصورة')
-                            ->image() // يحدد أنه ملف صورة فقط
-                            ->directory('maintenance-requests') // تخزين الملفات داخل مجلد مخصص
+                            ->image()
+                            ->directory('maintenance-requests')
                             ->required(),
                     ]),
             ]);
@@ -94,13 +101,13 @@ class MaintenanceRequestsResource extends Resource
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                    Tables\Columns\ImageColumn::make('image_path')
-    ->label('الصورة')
-    ->disk('public') // التأكد من أن الصور تُحمل من disk الصحيح
-    ->width(100) // تعيين عرض الصورة
-    ->height(100) // تعيين ارتفاع الصورة
-    ,
-                   
+                Tables\Columns\ImageColumn::make('image_path')
+                    ->label('الصورة')
+                    ->disk('public') //
+                    ->width(100) //
+                    ->height(100) //
+                ,
+
             ])
             ->filters([
                 //
@@ -113,6 +120,36 @@ class MaintenanceRequestsResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
+
+
+
+
+                BulkAction::make('Export to PDF')
+
+                    // ->action(function ($records) {
+                    //     $pdf = Pdf::loadHtml(
+                    //         Blade::render('pdf-bulk', ['records' => $records])
+                    //     );
+
+                    //     return response()->streamDownload(function () use ($pdf) {
+                    //         echo $pdf->stream();
+                    //     }, 'orders.pdf');
+                    // }),
+
+                    ->action(function ($records) {
+                        $html = Blade::render('pdf-bulk', ['records' => $records]);
+
+                        $mpdf = new Mpdf([
+                            'mode' => 'utf-8',
+                            'format' => 'A4',
+                            'default_font' => 'dejavusans',
+                        ]);
+
+                        $mpdf->WriteHTML($html);
+                        return response()->streamDownload(function () use ($mpdf) {
+                            echo $mpdf->Output('', 'S');
+                        }, 'hdhg' . '.pdf');
+                    })
             ]);
     }
 
@@ -121,6 +158,13 @@ class MaintenanceRequestsResource extends Resource
         return [
             // RelationManagers\ImagesRelationManager::class,
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->whereHas('property', function ($query) {
+            $query->where('user_id', auth()->id()); // 🔹 تصفية الطلبات بناءً على مالك العقار
+        });
     }
 
     public static function getPages(): array

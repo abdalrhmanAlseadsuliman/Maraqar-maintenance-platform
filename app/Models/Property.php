@@ -4,6 +4,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\MaintenanceRequests;
 
 
 class Property extends Model
@@ -19,7 +20,7 @@ class Property extends Model
 
     public function maintenanceRequests()
     {
-        return $this->hasMany(MaintenanceRequest::class);
+        return $this->hasMany(MaintenanceRequests::class);
     }
     //
 }

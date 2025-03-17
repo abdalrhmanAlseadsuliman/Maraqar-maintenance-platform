@@ -1,21 +1,40 @@
 <?php
 
-namespace App\Filament\Resources;
 
-use App\Filament\Resources\PropertyResource\Pages;
-use App\Filament\Resources\PropertyResource\RelationManagers;
-use App\Models\Property;
+namespace App\Filament\Resources;
+// namespace App\Filament\Resources;
+
+// use Filament\Forms;
+// use Filament\Tables;
+// use App\Models\Property;
+// use Filament\Forms\Form;
+// use Filament\Tables\Table;
+// use Filament\Resources\Resource;
+// use Illuminate\Support\Facades\Auth;
+// use Illuminate\Database\Eloquent\Builder;
+// use App\Filament\Resources\PropertyResource\Pages;
+// use Illuminate\Database\Eloquent\SoftDeletingScope;
+// use App\Filament\Resources\PropertyResource\RelationManagers;
+
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use App\Models\Property;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Resources\PropertyResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\PropertyResource\RelationManagers;
+
+
 
 class PropertyResource extends Resource
 {
     protected static ?string $model = Property::class;
+
+    protected static ?string $panel = 'admin';
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -23,10 +42,11 @@ class PropertyResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('user_id')
-                    ->required()
-                    ->numeric(),
+                Forms\Components\Select::make('user_id')
+                    ->relationship('owner' , 'name')
+                    ->required(),
                 Forms\Components\TextInput::make('name')
+                    ->label('property_name')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('property_number')
@@ -48,8 +68,10 @@ class PropertyResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            // ->query(fn (Builder $query) => $query->where('user_id', '1'))
+
             ->columns([
-                Tables\Columns\TextColumn::make('user_id')
+                Tables\Columns\TextColumn::make('owner.name')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('name')
@@ -94,6 +116,15 @@ class PropertyResource extends Resource
             //
         ];
     }
+
+
+    // public static function getEloquentQuery(): Builder
+    // {
+    //     // dump(  Auth::user()->name ); // للتحقق من ID المستخدم الحالي
+    //     return parent::getEloquentQuery()->whereHas('owner', function ($query) {
+    //         $query->where('id', Auth::user()->id);
+    //     });
+    // }
 
     public static function getPages(): array
     {
