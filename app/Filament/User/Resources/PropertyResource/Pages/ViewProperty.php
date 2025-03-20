@@ -4,19 +4,16 @@ namespace App\Filament\User\Resources\PropertyResource\Pages;
 
 use App\Filament\User\Resources\PropertyResource;
 use Filament\Actions;
-use Filament\Resources\Pages\ListRecords;
+use Filament\Resources\Pages\ViewRecord;
 
-class ListProperties extends ListRecords
+class ViewProperty extends ViewRecord
 {
     protected static string $resource = PropertyResource::class;
-
-    // protected static ?string $title = 'عرض العقارات';
-
 
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\EditAction::make(),
         ];
     }
 }

@@ -20,10 +20,10 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('city')->default('sew');
-            $table->enum('role', UserRole::all())->default(UserRole::CUSTOMER);
+            $table->enum('role', UserRole::all())->default(UserRole::CLIENT);
             $table->timestamps();
             $table->rememberToken();
-           
+
         });
 
 

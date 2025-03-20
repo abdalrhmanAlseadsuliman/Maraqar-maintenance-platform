@@ -2,16 +2,17 @@
 
 namespace App\Filament\User\Resources;
 
-use App\Filament\User\Resources\PropertyResource\Pages;
-use App\Filament\User\Resources\PropertyResource\RelationManagers;
-use App\Models\Property;
+use auth;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use App\Models\Property;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\User\Resources\PropertyResource\Pages;
+use App\Filament\User\Resources\PropertyResource\RelationManagers;
 
 class PropertyResource extends Resource
 {
@@ -28,15 +29,13 @@ class PropertyResource extends Resource
 
     public static function getModelLabel(): string
     {
-        return 'عقار';
+        return 'عقار جديد';
     }
 
     public static function getNavigationLabel(): string
     {
         return 'إدارة العقارات';
     }
-
-
 
     public static function form(Form $form): Form
     {
@@ -57,7 +56,8 @@ class PropertyResource extends Resource
                 Forms\Components\TextInput::make('title_deed_number')
                     ->label('رقم صك الملكية')
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->visible(fn () => auth()->user()->hasRole(['CLT'])),
                 Forms\Components\TextInput::make('land_piece_number')
                     ->label('رقم الارض')
                     ->required()
@@ -115,7 +115,10 @@ class PropertyResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make()
+                ->label('عرض'),
+                Tables\Actions\EditAction::make()
+                ->label('تعديل'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -136,6 +139,7 @@ class PropertyResource extends Resource
         return [
             'index' => Pages\ListProperties::route('/'),
             'create' => Pages\CreateProperty::route('/create'),
+            'view' => Pages\ViewProperty::route('/{record}'),
             'edit' => Pages\EditProperty::route('/{record}/edit'),
         ];
     }

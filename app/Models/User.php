@@ -51,4 +51,18 @@ class User extends Authenticatable
 //     return $this->role === UserRole::ADMIN;
 // }
 
+
+    // التحقق مما إذا كان المستخدم يمتلك الدور المطلوب
+    public function hasRole($role)
+    {
+        return $this->role === $role;
+    }
+
+    // التحقق من أدوار متعددة
+    public function hasAnyRole(array $roles)
+    {
+        return in_array($this->role, $roles);
+    }
+
+
 }

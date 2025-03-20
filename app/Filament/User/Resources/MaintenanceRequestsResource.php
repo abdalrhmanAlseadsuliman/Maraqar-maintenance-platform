@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Filament\User\Resources;
+
 use Mpdf\Mpdf;
 use Filament\Forms;
 use Filament\Tables;
@@ -90,7 +91,7 @@ class MaintenanceRequestsResource extends Resource
                 Tables\Columns\TextColumn::make('property_id')
                     ->numeric()
                     ->sortable(),
-                    Tables\Columns\TextColumn::make('request_type')
+                Tables\Columns\TextColumn::make('request_type')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('status'),
                 Tables\Columns\TextColumn::make('submitted_at')
@@ -117,14 +118,15 @@ class MaintenanceRequestsResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make()
+                    ->label('عرض'),
+                Tables\Actions\EditAction::make()
+                    ->label('تعديل'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-
-
 
                 BulkAction::make('Export to PDF')
 
@@ -199,6 +201,7 @@ class MaintenanceRequestsResource extends Resource
         return [
             'index' => Pages\ListMaintenanceRequests::route('/'),
             'create' => Pages\CreateMaintenanceRequests::route('/create'),
+            'view' => Pages\ViewMaintenanceRequests::route('/{record}'),
             'edit' => Pages\EditMaintenanceRequests::route('/{record}/edit'),
         ];
     }

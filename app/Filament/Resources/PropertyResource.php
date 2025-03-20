@@ -33,36 +33,62 @@ use App\Filament\Resources\PropertyResource\RelationManagers;
 class PropertyResource extends Resource
 {
     protected static ?string $model = Property::class;
+    protected static ?int $navigationSort = 2;
 
     protected static ?string $panel = 'admin';
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-building-office-2';
 
+
+
+    public static function getPluralLabel(): string
+    {
+        return 'العقارات';
+    }
+
+    public static function getModelLabel(): string
+    {
+        return 'عقار جديد';
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return 'إدارة العقارات';
+    }
     public static function form(Form $form): Form
     {
         return $form
-            ->schema([
-                Forms\Components\Select::make('user_id')
-                    ->relationship('owner' , 'name')
-                    ->required(),
-                Forms\Components\TextInput::make('name')
-                    ->label('property_name')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('property_number')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('title_deed_number')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('land_piece_number')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('plan_number')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\DatePicker::make('sale_date'),
-            ]);
+        ->schema([
+            Forms\Components\Select::make('user_id')
+                ->relationship('owner', 'name')
+                ->label('مالك العقار')
+                ->required(),
+            Forms\Components\TextInput::make('name')
+                ->label('اسم العقار')
+                ->required()
+                ->maxLength(255),
+            Forms\Components\TextInput::make('property_number')
+                ->label('رقم العقار')
+                ->required()
+                ->maxLength(255),
+            Forms\Components\TextInput::make('title_deed_number')
+                ->label('رقم صك الملكية')
+                // ->visible(fn () => auth()->user()->hasRole(['admin']))
+                ->disabled(fn () => auth()->user()->hasRole('CLT'))
+                ->required()
+                ->maxLength(255),
+            Forms\Components\TextInput::make('land_piece_number')
+                ->label('رقم الارض')
+                ->required()
+                ->maxLength(255),
+            Forms\Components\TextInput::make('plan_number')
+                ->label('رقم المخطط')
+                ->required()
+                ->maxLength(255),
+            Forms\Components\DatePicker::make('sale_date')
+                ->label('تاريخ الشراء')
+                ->required(),
+        ]);
     }
 
     public static function table(Table $table): Table
@@ -70,21 +96,27 @@ class PropertyResource extends Resource
         return $table
             // ->query(fn (Builder $query) => $query->where('user_id', '1'))
 
-            ->columns([
+             ->columns([
                 Tables\Columns\TextColumn::make('owner.name')
-                    ->numeric()
+                    ->label('مالك العقار')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('name')
+                    ->label('اسم العقار')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('property_number')
+                    ->label('رقم العقار')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('title_deed_number')
+                    ->label('رقم صك الملكية')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('land_piece_number')
+                    ->label('رقم الارض')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('plan_number')
+                    ->label('رقم المخطط')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('sale_date')
+                    ->label('تاريخ الشراء')
                     ->date()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
@@ -100,8 +132,10 @@ class PropertyResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make()
+                ->label('عرض'),
+                Tables\Actions\EditAction::make()
+                ->label('تعديل'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
