@@ -1,51 +1,50 @@
-if ('serviceWorker' in navigator) {
-    // 🔹 كود Service Worker مدمج داخل `Blob`
-    const serviceWorkerScript = `
-        self.addEventListener('push', function(event) {
-            const data = event.data ? event.data.json() : {};
-
-            event.waitUntil(
-                self.registration.showNotification(data.title || 'New Notification', {
-                    body: data.body || 'You have a new message!',
-                    icon: '/icon.png',
-                    badge: '/badge.png',
-                    data: { url: data.url || '/' },
-                })
-            );
-        });
-
-        self.addEventListener('notificationclick', function(event) {
-            event.notification.close();
-            event.waitUntil(clients.openWindow(event.notification.data.url));
-        });
-    `;
-
-    // 🔹 إنشاء ملف مؤقت من الـ Blob
-    const blob = new Blob([serviceWorkerScript], { type: 'application/javascript' });
-    const serviceWorkerURL = URL.createObjectURL(blob);
-
-    // 🔹 تسجيل الـ Service Worker من الـ Blob
-    navigator.serviceWorker.register(serviceWorkerURL)
-        .then((registration) => {
-            console.log('✅ Service Worker Registered!', registration);
-        });
-
-    navigator.serviceWorker.ready.then((registration) => {
-        registration.pushManager.subscribe({
-            userVisibleOnly: true,
-            applicationServerKey: 'BMQKby0OfiJfPKJ9cY8ssB9_uRPiOjEYCt1rDqDg4cQ_8aHj-g2Hfox6QgRMUeBgiZvzhLzbSKcgJlHCQI-s6JU'
-        }).then((subscription) => {
-            fetch('/save-subscription', {
-                method: 'POST',
-                body: JSON.stringify(subscription),
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                }
+document.addEventListener("DOMContentLoaded", function() {
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/service-worker.js')
+            .then(function(registration) {
+                console.log('Service Worker Registered:', registration);
+                subscribeUserToPush(registration);
             })
-            .then(response => response.json())
-            .then(data => console.log('✅ Subscription saved:', data))
-            .catch(error => console.error('❌ Error saving subscription:', error));
-        });
+            .catch(function(error) {
+                console.error('Service Worker Registration Failed:', error);
+            });
+    }
+});
+
+function subscribeUserToPush(registration) {
+    const publicKey = "BMaC1WKqfmIzHNsuqLky-sNJe-Z1BllvriuWPhYkr0XRMqzdUk_vhofkrEg6BtRFvmgYXaYonEUp9eDarq1vzyI"; // ضع هنا VAPID_PUBLIC_KEY من .env
+
+    registration.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: urlBase64ToUint8Array(publicKey)
+    }).then(function(subscription) {
+        console.log('Push Subscription:', subscription);
+
+        fetch('/save-subscription', {
+            method: 'POST',
+            body: JSON.stringify(subscription),
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            credentials: 'same-origin'
+        }).then(response => response.json())
+          .then(data => console.log('Subscription Saved:', data))
+          .catch(error => console.error('Subscription Failed:', error));
+    }).catch(function(error) {
+        console.error('Push Subscription Failed:', error);
     });
+}
+
+function urlBase64ToUint8Array(base64String) {
+    const padding = '='.repeat((4 - base64String.length % 4) % 4);
+    const base64 = (base64String + padding)
+        .replace(/-/g, '+')
+        .replace(/_/g, '/');
+    const rawData = atob(base64);
+    const outputArray = new Uint8Array(rawData.length);
+    for (let i = 0; i < rawData.length; ++i) {
+        outputArray[i] = rawData.charCodeAt(i);
+    }
+    return outputArray;
 }

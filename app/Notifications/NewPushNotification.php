@@ -9,7 +9,7 @@ use Illuminate\Notifications\Notification;
 use NotificationChannels\WebPush\WebPushMessage;
 use NotificationChannels\WebPush\WebPushChannel;
 
-class NewPushNotification extends Notification
+class NewPushNotification extends Notification 
 {
     public function via($notifiable)
     {

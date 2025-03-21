@@ -1,4 +1,4 @@
-<?php 
+<?php
 namespace App\Observers;
 
 use App\Models\MaintenanceRequests;
@@ -8,10 +8,10 @@ use App\Notifications\NewPushNotification;
 
 class MaintenanceRequestObserver
 {
-   
+
     public function created(MaintenanceRequests $request)
     {
-       
+
         $admins = User::where('role', 'admin')->get();
 
         foreach ($admins as $admin) {

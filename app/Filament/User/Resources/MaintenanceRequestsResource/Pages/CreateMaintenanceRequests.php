@@ -25,7 +25,7 @@ class CreateMaintenanceRequests extends CreateRecord
 
             // dd('فرق السنوات:', now()->diffInYears($saleDate));
 
-            if (now()->diffInYears($saleDate) <= 1) {
+            if (abs(now()->diffInYears($saleDate)) >= 1) {
                 // dump('✅ الطلب سيتم رفضه لأن الفرق أكبر من سنة.');
 
                 $record->update(['status' => 'rejected']);
