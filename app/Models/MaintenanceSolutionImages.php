@@ -14,6 +14,6 @@ class MaintenanceSolutionImages extends Model
 
     public function maintenanceRequest()
     {
-        return $this->belongsTo(MaintenanceRequests::class);
+        return $this->belongsTo(MaintenanceRequests::class, 'maintenance_request_id');
     }
 }

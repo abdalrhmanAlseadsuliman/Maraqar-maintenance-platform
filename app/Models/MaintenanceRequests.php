@@ -37,7 +37,7 @@ class MaintenanceRequests extends Model
 
     public function solutionImages()
     {
-        return $this->hasMany(MaintenanceSolutionImages::class);
+        return $this->hasMany(MaintenanceSolutionImages::class, 'maintenance_request_id');
     }
     //
 }

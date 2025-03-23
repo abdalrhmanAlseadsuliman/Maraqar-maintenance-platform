@@ -129,17 +129,6 @@ class MaintenanceRequestsResource extends Resource
                 ]),
 
                 BulkAction::make('Export to PDF')
-
-                    // ->action(function ($records) {
-                    // $pdf = Pdf::loadHtml(
-                    // Blade::render('pdf-bulk', ['records' => $records])
-                    // );
-
-                    // return response()->streamDownload(function () use ($pdf) {
-                    // echo $pdf->stream();
-                    // }, 'orders.pdf');
-                    // }),
-
                     ->action(function ($records) {
                         $html = Blade::render('pdf-bulk', ['records' => $records]);
 
