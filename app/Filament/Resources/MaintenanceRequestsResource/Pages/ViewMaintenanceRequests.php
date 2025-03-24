@@ -44,6 +44,7 @@ class ViewMaintenanceRequests extends ViewRecord
 
     public function form(Form $form): Form
     {
+        //  dd($form);
         return $form->schema([
             Section::make('معلومات الطلب')
                 ->schema([
@@ -77,7 +78,20 @@ class ViewMaintenanceRequests extends ViewRecord
                     TextInput::make('cost')->label('الكلفة النهائية')->prefix('$')->disabled(),
                 ]),
 
-
+            Section::make('الصور المرفقة')
+                ->schema([
+                    Repeater::make('images')
+                        ->relationship('images') // جلب الصور من العلاقة
+                        ->schema([
+                            FileUpload::make('image_path')
+                                ->label('الصورة')
+                                ->image() // تحديد أن هذا ملف صورة
+                                ->disk('public') // تحديد مكان التخزين
+                                ->disabled() // منع التعديل
+                                ->previewable(true) // إظهار المعاينة
+                        ]),
+                ])
+                ->columnSpanFull()
 
 
             // Section::make('الصور المرفقة')
@@ -90,22 +104,22 @@ class ViewMaintenanceRequests extends ViewRecord
             // ])
             // ->columnSpanFull(),
 
-            Section::make('الصور المرفقة')
-                ->schema([
-                    Repeater::make('images')
-                        ->label('الصور')
-                        ->relationship('images') // جلب الصور من العلاقة
-                        ->schema([
-                            Placeholder::make('image_path')
-                                ->label('الصورة')
-                                ->content(
-                                    fn($record) =>
-                                    '<img src="' . asset('storage/' . $record->image_path) . '" width="100" height="100" style="border-radius: 8px;">'
-                                ),
-                        ])
-                        ->columns(3),
-                ])
-                ->columnSpanFull(),
+            // Section::make('الصور المرفقة')
+            //     ->schema([
+            //         Repeater::make('images')
+            //             ->label('الصور')
+            //             ->relationship('images') // جلب الصور من العلاقة
+            //             ->schema([
+            //                 Placeholder::make('image_path')
+            //                     ->label('الصورة')
+            //                     ->content(
+            //                         fn($record) =>
+            //                         '<img src="' . asset('storage/' . $record->image_path) . '" width="100" height="100" style="border-radius: 8px;">'
+            //                     ),
+            //             ])
+            //             ->columns(3),
+            //     ])
+            //     ->columnSpanFull(),
 
 
 
