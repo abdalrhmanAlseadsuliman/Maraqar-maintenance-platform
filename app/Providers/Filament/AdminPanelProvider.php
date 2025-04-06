@@ -53,7 +53,8 @@ class AdminPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
-            ])  ->databaseNotifications()
+            ])  ->databaseNotifications() 
+                ->sidebarCollapsibleOnDesktop()
             ->authMiddleware([
                 FilamentAdminMiddleware::class,
                 Authenticate::class,
