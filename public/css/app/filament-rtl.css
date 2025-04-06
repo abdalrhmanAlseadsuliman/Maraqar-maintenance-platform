@@ -20,3 +20,6 @@ html {
 .filament-header {
     text-align: right !important;
 }
+.fi-topbar{
+    direction: ltr !important;
+}
