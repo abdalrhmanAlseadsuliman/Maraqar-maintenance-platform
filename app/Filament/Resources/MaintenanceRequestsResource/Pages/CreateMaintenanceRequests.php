@@ -23,25 +23,42 @@ class CreateMaintenanceRequests extends CreateRecord
     protected static string $resource = MaintenanceRequestsResource::class;
 
     private array $imagesToSave = [];
+    private array $solutionImagesToSave = [];
+
+
 
     // 🟢 تعديل البيانات قبل الحفظ (استخراج الصور)
     protected function mutateFormDataBeforeCreate(array $data): array
     {
+        // حفظ الصور الخاصة بالحقل images
         $this->imagesToSave = $data['images'] ?? [];
-        unset($data['images']); // إزالة الصور حتى لا تسبب خطأ أثناء الحفظ
+        unset($data['images']); // إزالة الصور الخاصة بالحقل images
+
+        // حفظ الصور الخاصة بالحقل solutionimages
+        $this->solutionImagesToSave = $data['solutionImages'] ?? [];
+        unset($data['solutionImages']); // إزالة الصور الخاصة بالحقل solutionimages
 
         return $data;
     }
 
+
     // 🟢 تعديل عملية إنشاء الطلب للحصول على `$record`
     protected function handleRecordCreation(array $data): Model
     {
+        // إنشاء السجل
         $record = static::getModel()::create($data);
 
-        // 🟢 بعد إنشاء الطلب، حفظ الصور
+        // حفظ الصور الخاصة بالحقل images
         if (!empty($this->imagesToSave)) {
             $record->images()->createMany(
                 collect($this->imagesToSave)->map(fn($image) => ['image_path' => $image])->toArray()
+            );
+        }
+
+        // حفظ الصور الخاصة بالحقل solutionimages
+        if (!empty($this->solutionImagesToSave)) {
+            $record->solutionImages()->createMany(
+                collect($this->solutionImagesToSave)->map(fn($image) => ['image_path' => $image])->toArray()
             );
         }
 
@@ -127,7 +144,8 @@ class CreateMaintenanceRequests extends CreateRecord
                         ->multiple()
                         ->directory('maintenance-requests-cost')
                         ->required(),
-                ])->visible(fn() => Auth::user()->role === UserRole::MAINTTECH),
+                ])
+                // ->visible(fn() => Auth::user()->role === UserRole::MAINTTECH),
         ]);
     }
 }

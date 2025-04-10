@@ -10,51 +10,60 @@ use App\Filament\Resources\MaintenanceRequestsResource;
 class EditMaintenanceRequests extends EditRecord
 {
     protected static string $resource = MaintenanceRequestsResource::class;
-
-    public function form(Form $form): Form
-    {
-        return (new CreateMaintenanceRequests())->form($form); // إعادة استخدام الفورم
-    }
     private array $imagesToSave = [];
+    private array $solutionImagesToSave = [];
 
-    // 🟢 تعديل البيانات قبل الحفظ (استخراج الصور)
-    protected function mutateFormDataBeforeCreate(array $data): array
+    // 🟢 تعديل البيانات قبل التحديث (استخراج الصور)
+    protected function mutateFormDataBeforeSave(array $data): array
     {
+
+        // حفظ الصور الخاصة بالحقل images
         $this->imagesToSave = $data['images'] ?? [];
-        unset($data['images']); // إزالة الصور حتى لا تسبب خطأ أثناء الحفظ
+        unset($data['images']); // إزالة الصور الخاصة بالحقل images
+
+        // حفظ الصور الخاصة بالحقل solutionimages
+        $this->solutionImagesToSave = $data['solutionImages'] ?? [];
+        unset($data['solutionImages']); // إزالة الصور الخاصة بالحقل solutionimages
 
         return $data;
     }
 
-    // 🟢 تعديل عملية إنشاء الطلب للحصول على `$record`
+    // 🟢 تعديل عملية التحديث للسجل
     protected function handleRecordUpdate(Model $record, array $data): Model
     {
-        // 🟢 تحديث بيانات الطلب نفسه
+        // تحديث السجل
+        // dd($data);
         $record->update($data);
 
-        // 🟢 تحديث الصور إن وُجدت صور جديدة
-        if (!empty($this->imagesToSave)) {
-            // حذف الصور القديمة إن أردت (اختياري):
-            // $record->images()->delete();
+        // حذف الصور القديمة (اختياري)
+        // إذا كنت ترغب في حذف الصور القديمة قبل إضافة صور جديدة:
+        // $record->images()->delete();  // حذف جميع الصور القديمة
+        // $record->solutionimages()->delete();  // حذف صور الحلول القديمة
 
-            // إضافة الصور الجديدة
+        // حفظ الصور الخاصة بالحقل images
+        if (!empty($this->imagesToSave)) {
+           
             $record->images()->createMany(
                 collect($this->imagesToSave)->map(fn($image) => ['image_path' => $image])->toArray()
             );
         }
 
+        // حفظ الصور الخاصة بالحقل solutionimages
+        if (!empty($this->solutionImagesToSave)) {
+            $record->solutionImages()->createMany(
+                collect($this->solutionImagesToSave)->map(fn($image) => ['image_path' => $image])->toArray()
+            );
+        }
+
         return $record;
     }
-    protected function mutateFormDataBeforeSave(array $data): array
+
+    public function form(Form $form): Form
     {
-        $this->imagesToSave = $data['images'] ?? []; // 🟢 نحفظ الصور مؤقتًا
-        unset($data['images']);                     // 🔴 نزيلها من البيانات حتى لا تتسبب بخطأ
-
-        return $data;
+        return (new CreateMaintenanceRequests())->form($form); // إعادة استخدام الفورم
     }
-
-
 }
+
 
 
 // namespace App\Filament\Resources\MaintenanceRequestsResource\Pages;
