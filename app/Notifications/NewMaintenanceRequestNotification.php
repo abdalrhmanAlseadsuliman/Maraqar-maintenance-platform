@@ -9,9 +9,9 @@ use Filament\Notifications\Notification as FilamentNotification;
 use App\Models\MaintenanceRequests;
 use Illuminate\Notifications\Messages\BroadcastMessage;
 
-class NewMaintenanceRequestNotification extends Notification implements ShouldQueue
+class NewMaintenanceRequestNotification extends Notification
 {
-    use Queueable;
+    // use Queueable;
 
     protected $request;
 

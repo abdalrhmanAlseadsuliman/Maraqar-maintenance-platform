@@ -2,18 +2,20 @@
 
 namespace App\Filament\Resources\MaintenanceRequestsResource\Pages;
 
-use Filament\Resources\Pages\CreateRecord;
-use App\Filament\Resources\MaintenanceRequestsResource;
+use App\Enums\UserRole;
 use Filament\Forms\Form;
-use Filament\Forms\Components\Section;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Textarea;
-use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\DateTimePicker;
-
-
 use Illuminate\Database\Eloquent\Model;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\FileUpload;
+use Filament\Resources\Pages\CreateRecord;
+use Illuminate\Support\Facades\Auth;
+
+
+use Filament\Forms\Components\DateTimePicker;
+use App\Filament\Resources\MaintenanceRequestsResource;
 
 
 class CreateMaintenanceRequests extends CreateRecord
@@ -45,6 +47,8 @@ class CreateMaintenanceRequests extends CreateRecord
 
         return $record;
     }
+
+
 
 
     public function form(Form $form): Form
@@ -98,12 +102,8 @@ class CreateMaintenanceRequests extends CreateRecord
                         ->label('ملاحظات الفنيين'),
                 ]),
 
-            Section::make('التكلفة والمرفقات')
+            Section::make(' المرفقات')
                 ->schema([
-                    TextInput::make('cost')
-                        ->label('الكلفة النهائية')
-                        ->numeric()
-                        ->prefix('$'),
 
                     FileUpload::make('images')
                         ->label('تحميل الصور')
@@ -112,8 +112,22 @@ class CreateMaintenanceRequests extends CreateRecord
                         ->directory('maintenance-requests')
                         ->required(),
                 ]),
+
+
+            Section::make('التكلفة والمرفقات')
+                ->schema([
+                    TextInput::make('cost')
+                        ->label('الكلفة النهائية')
+                        ->numeric()
+                        ->prefix('$'),
+
+                    FileUpload::make('solutionImages')
+                        ->label('تحميل الصور')
+                        ->image()
+                        ->multiple()
+                        ->directory('maintenance-requests-cost')
+                        ->required(),
+                ])->visible(fn() => Auth::user()->role === UserRole::MAINTTECH),
         ]);
     }
-    
 }
-

@@ -59,7 +59,7 @@ class ViewMaintenanceRequests extends ViewRecord
                         ])
                         ->disabled(),
 
-                    DateTimePicker::make('submitted_at')->label('تاريخ الإرسال')->disabled(),
+                    DateTimePicker::make('created_at')->label('تاريخ الإرسال')->disabled(),
                 ]),
 
             Section::make('تفاصيل المشكلة')

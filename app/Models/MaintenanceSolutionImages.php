@@ -16,4 +16,14 @@ class MaintenanceSolutionImages extends Model
     {
         return $this->belongsTo(MaintenanceRequests::class, 'maintenance_request_id');
     }
-}
+
+protected static function boot()
+{
+    parent::boot();
+
+    static::creating(function ($image) {
+        if (!$image->maintenance_request_id) {
+            $image->maintenance_request_id = request()->route('record') ?? null;
+        }
+    });
+}}

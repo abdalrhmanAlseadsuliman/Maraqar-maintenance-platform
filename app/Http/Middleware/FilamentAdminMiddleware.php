@@ -16,8 +16,16 @@ class FilamentAdminMiddleware
     public function handle(Request $request, Closure $next): Response
     {
 
-        if (!Auth::check() || Auth::user()->role !== UserRole::ADMIN) {
-            abort(403, 'unauthorized');
+        if (!Auth::check()) {
+            abort(403, 'Unauthorized');
+        }
+
+
+        $allowedRoles = array_diff(UserRole::all(), [UserRole::CLIENT]);
+
+
+        if (!in_array(Auth::user()->role, $allowedRoles)) {
+            abort(403, 'Unauthorized');
         }
 
         return $next($request);

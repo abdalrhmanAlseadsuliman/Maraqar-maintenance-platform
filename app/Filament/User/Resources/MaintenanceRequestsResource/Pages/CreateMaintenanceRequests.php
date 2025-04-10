@@ -78,9 +78,7 @@ class CreateMaintenanceRequests extends CreateRecord
                     ->default('pending')
                     ->disabled()
                     ->required(),
-                DateTimePicker::make('submitted_at')
-                    ->label('تاريخ الإرسال')
-                    ->required(),
+
             ]),
             Section::make('تفاصيل المشكلة')->schema([
                 Textarea::make('problem_description')->label('وصف المشكلة')->required(),
@@ -90,8 +88,10 @@ class CreateMaintenanceRequests extends CreateRecord
                 TextInput::make('technician_name')->label('اسم الفني')->maxLength(255),
                 Textarea::make('technician_notes')->label('ملاحظات الفنيين'),
             ]),
-            Section::make('التكلفة والمرفقات')->schema([
-                TextInput::make('cost')->label('الكلفة النهائية')->numeric()->prefix('$'),
+
+
+            Section::make('مرفقات طلب الصيانة')->schema([
+
                 FileUpload::make('images')
                     ->label('تحميل الصور')
                     ->image()
@@ -99,6 +99,8 @@ class CreateMaintenanceRequests extends CreateRecord
                     ->directory('maintenance-requests')
                     ->required(),
             ]),
+
+          
         ]);
     }
 }

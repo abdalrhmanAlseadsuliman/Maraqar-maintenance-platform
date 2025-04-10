@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Blade;
 use Filament\Tables\Actions\BulkAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ImageColumn;
+use Filament\Actions;
 
 
 use Filament\Resources\Pages\ListRecords;
@@ -21,6 +22,12 @@ class ListMaintenanceRequests extends ListRecords
     protected static string $resource = MaintenanceRequestsResource::class;
 
 
+    protected function getHeaderActions(): array
+    {
+        return [
+            Actions\CreateAction::make(),
+        ];
+    }
     public function getTitle(): string
     {
         return ' إدارة طلبات الصيانة';
