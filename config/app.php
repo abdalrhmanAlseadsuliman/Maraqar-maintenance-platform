@@ -1,4 +1,6 @@
 <?php
+use Illuminate\Support\Facades\Facade;
+use Illuminate\Support\ServiceProvider;
 
 return [
 
@@ -123,4 +125,10 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
     App\Providers\AuthServiceProvider::class,
+    Maatwebsite\Excel\ExcelServiceProvider::class,
+    'aliases' => Facade::defaultAliases()->merge([
+        // 'Example' => App\Facades\Example::class,
+        'Excel' => Maatwebsite\Excel\ExcelServiceProvider::class,
+    ])->toArray(),
+
 ];
