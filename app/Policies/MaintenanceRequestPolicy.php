@@ -35,7 +35,7 @@ class MaintenanceRequestPolicy
         ]);
     }
 
-    public function delete(User $user, MaintenanceRequests $maintenanceRequests): bool
+    public function delete(User $user): bool
     {
         return !in_array($user->role, [
             UserRole::CHAIRMAN,
@@ -53,7 +53,8 @@ class MaintenanceRequestPolicy
         ]);
     }
 
-    public function forceDelete(User $user, MaintenanceRequests $maintenanceRequests): bool
+    // public function forceDelete(User $user, MaintenanceRequests $maintenanceRequests): bool
+    public function forceDelete(User $user): bool
     {
         return !in_array($user->role, [
             UserRole::CHAIRMAN,

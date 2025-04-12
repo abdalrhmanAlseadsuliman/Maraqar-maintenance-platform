@@ -1,9 +1,8 @@
-@media (min-width: 1024px) {
 html {
     direction: rtl;
     text-align: right;
 }
-}
+
 /* تعديل الشريط الجانبي ليكون على اليمين */
 .filament-sidebar {
     right: 0 !important;
@@ -19,7 +18,4 @@ html {
 /* تحسين بعض التنسيقات */
 .filament-header {
     text-align: right !important;
-}
-.fi-topbar{
-    direction: ltr !important;
 }

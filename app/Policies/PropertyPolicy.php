@@ -59,7 +59,7 @@ class PropertyPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Property $property): bool
+    public function delete(User $user): bool
     {
         return !in_array($user->role, [
             UserRole::CHAIRMAN,
@@ -83,7 +83,7 @@ class PropertyPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Property $property): bool
+    public function forceDelete(User $user): bool
     {
         return !in_array($user->role, [
             UserRole::CHAIRMAN,

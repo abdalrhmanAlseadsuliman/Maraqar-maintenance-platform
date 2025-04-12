@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 
 use Filament\Resources\Resource;
 use App\Models\MaintenanceRequests;
+use Illuminate\Database\Eloquent\Model;
 use App\Filament\Resources\MaintenanceRequestsResource\Pages;
 
 
@@ -22,17 +23,10 @@ class MaintenanceRequestsResource extends Resource
     }
 
 
-    // public static function getModelLabel(): string
-    // {
-    //     return 'طلب جديد';
-    // }
-
     public static function getNavigationLabel(): string
     {
         return 'إدارة الطلبات';
     }
-
-
 
     public static function getPages(): array
     {
@@ -43,4 +37,9 @@ class MaintenanceRequestsResource extends Resource
             'edit' => Pages\EditMaintenanceRequests::route('/{record}/edit'),
         ];
     }
+    public static function canDelete(Model $record): bool
+{
+    return auth()->user()->can('delete', $record);
+}
+
 }

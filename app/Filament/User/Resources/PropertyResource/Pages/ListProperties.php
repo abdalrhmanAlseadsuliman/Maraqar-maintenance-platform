@@ -12,6 +12,16 @@ class ListProperties extends ListRecords
 
     // protected static ?string $title = 'عرض العقارات';
 
+    public function getTitle(): string
+    {
+        return 'عرض العقارات';
+    }
+
+    public function getBreadcrumb(): string
+    {
+        return ' قائمة العقارات';
+    }
+
 
     protected function getHeaderActions(): array
     {

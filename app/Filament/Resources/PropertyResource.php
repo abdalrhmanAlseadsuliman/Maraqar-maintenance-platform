@@ -23,6 +23,7 @@ use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\PropertyResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -139,7 +140,8 @@ class PropertyResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()
+                    ->visible(fn () => Auth::user()->can('delete', Property::class)),
                 ]),
             ]);
     }
@@ -169,4 +171,10 @@ class PropertyResource extends Resource
             'edit' => Pages\EditProperty::route('/{record}/edit'),
         ];
     }
+
+//     public static function canDelete(Model $record): bool
+// {
+//     return auth()->user()->can('delete', $record);
+// }
+
 }

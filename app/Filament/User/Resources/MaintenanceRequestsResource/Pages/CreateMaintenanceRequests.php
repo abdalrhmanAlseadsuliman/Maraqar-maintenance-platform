@@ -15,11 +15,41 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Resources\Pages\CreateRecord;
 use Filament\Forms\Components\DateTimePicker;
 use App\Filament\User\Resources\MaintenanceRequestsResource;
+use Filament\Actions;
 
 class CreateMaintenanceRequests extends CreateRecord
 {
     protected static string $resource = MaintenanceRequestsResource::class;
 
+    public function getTitle(): string
+    {
+        return ' إنشاء طلب صيانة ';
+    }
+
+    public function getBreadcrumb(): string
+    {
+        return 'إنشاء طلب صيانة';
+    }
+
+
+
+    protected function getFormActions(): array
+    {
+        return [
+            Action::make('create')
+                ->label('إرسال الطلب')
+                ->submit('create')
+                ->icon('heroicon-m-check'),
+
+            // Action::make('createAnother')
+            //     ->label('إرسال وطلب جديد')
+            //     ->submit('createAnother'),
+
+            Action::make('cancel')
+                ->label('إلغاء')
+                ->url($this->getResource()::getUrl('index')),
+        ];
+    }
     private array $imagesToSave = [];
 
     protected function mutateFormDataBeforeCreate(array $data): array
@@ -35,13 +65,13 @@ class CreateMaintenanceRequests extends CreateRecord
 
         if (!empty($this->imagesToSave)) {
             $record->images()->createMany(
-                collect($this->imagesToSave)->map(fn ($image) => ['image_path' => $image])->toArray()
+                collect($this->imagesToSave)->map(fn($image) => ['image_path' => $image])->toArray()
             );
         }
 
         $property = Property::find($record->property_id);
 
-        if ($property && now()->diffInYears(Carbon::parse($property->sale_date)) >= 1) {
+        if ($property && abs(now()->diffInYears(Carbon::parse($property->sale_date))) >= 1) {
             $record->update(['status' => 'rejected']);
 
             Notification::make()
@@ -60,12 +90,24 @@ class CreateMaintenanceRequests extends CreateRecord
         return $record;
     }
 
+
+
+
+
     public function form(Form $form): Form
     {
         return $form->schema([
             Section::make('معلومات الطلب')->schema([
+                // Select::make('property_id')
+                //     ->relationship('property', 'name')
+                //     ->label('اختر العقار')
+                //     ->required(),
                 Select::make('property_id')
-                    ->relationship('property', 'name')
+                    ->relationship(
+                        name: 'property',
+                        titleAttribute: 'name',
+                        modifyQueryUsing: fn($query) => $query->where('user_id', auth()->id())
+                    )
                     ->label('اختر العقار')
                     ->required(),
                 Select::make('request_type')
@@ -78,17 +120,10 @@ class CreateMaintenanceRequests extends CreateRecord
                     ->default('pending')
                     ->disabled()
                     ->required(),
-
             ]),
             Section::make('تفاصيل المشكلة')->schema([
                 Textarea::make('problem_description')->label('وصف المشكلة')->required(),
             ]),
-            Section::make('المعلومات الفنية')->schema([
-                TextInput::make('technician_visits')->label('زيارات الفنيين')->numeric()->default(0)->required(),
-                TextInput::make('technician_name')->label('اسم الفني')->maxLength(255),
-                Textarea::make('technician_notes')->label('ملاحظات الفنيين'),
-            ]),
-
 
             Section::make('مرفقات طلب الصيانة')->schema([
 
@@ -100,7 +135,6 @@ class CreateMaintenanceRequests extends CreateRecord
                     ->required(),
             ]),
 
-          
         ]);
     }
 }

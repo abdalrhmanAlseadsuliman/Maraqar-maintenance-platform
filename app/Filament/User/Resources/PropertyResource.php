@@ -2,13 +2,17 @@
 
 namespace App\Filament\User\Resources;
 
-use auth;
+// use auth;
 use Filament\Forms;
 use Filament\Tables;
 use App\Models\Property;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
+// use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Auth;
+
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\User\Resources\PropertyResource\Pages;
@@ -56,8 +60,8 @@ class PropertyResource extends Resource
                 Forms\Components\TextInput::make('title_deed_number')
                     ->label('رقم صك الملكية')
                     ->required()
-                    ->maxLength(255)
-                    ->visible(fn () => auth()->user()->hasRole(['CLT'])),
+                    ->maxLength(255),
+                // ->visible(fn () => auth()->user()->hasRole(['CLT'])
                 Forms\Components\TextInput::make('land_piece_number')
                     ->label('رقم الارض')
                     ->required()
@@ -116,13 +120,14 @@ class PropertyResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make()
-                ->label('عرض'),
+                    ->label('عرض'),
                 Tables\Actions\EditAction::make()
-                ->label('تعديل'),
+                    ->label('تعديل'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()
+                    ->visible(fn () => Auth::user()->can('delete', Property::class)),
                 ]),
             ]);
     }
@@ -150,4 +155,6 @@ class PropertyResource extends Resource
             $query->where('user_id', auth()->id()); // 🔹 تصفية الطلبات بناءً على مالك العقار
         });
     }
+
+
 }
