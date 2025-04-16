@@ -16,8 +16,32 @@ class UsersImport implements ToModel
     */
     public function startRow(): int
     {
-        return 1; // يبدأ القراءة من السطر الثاني
+        return 1; 
     }
+    // public function model(array $row)
+    // {
+    //     try {
+    //         if ($this->isFirstRow) {
+    //             $this->isFirstRow = false;
+    //             return null;
+    //         }
+    //    // Property::create([
+    //     //     'user_id' => $user->id,
+    //     //     'name' => $row[3],
+    //     //     'plan_number' => $row[3],
+    //     //     'sale_date'=>$row[9],
+    //     // ]);
+    //         return User::create([
+    //             'name' => $row[0],
+    //             'email' => 'en@gmail.com', 
+    //             'password' => bcrypt($row[2]),
+    //             'phone' => $row[6],
+    //         ]);
+    //     } catch (\Exception $e) {
+    //         logger()->error('Import Error: ' . $e->getMessage());
+    //         return null;
+    //     }
+    // }
     public function model(array $row)
     {
         if ($this->isFirstRow) {
@@ -33,17 +57,23 @@ class UsersImport implements ToModel
 
         $user = User::create([
             'name' => $row[0],
-            'email' => $row[1],
+            'email' => 'ewen@gmail.com',
             'password' => $row[2],
+             'phone'=>$row[6],
         ]);
 
-        // إنشاء النشاط المرتبط بالمستخدم
+        
         Property::create([
             'user_id' => $user->id,
             'name' => $row[3],
-            'number' => $row[4],
+            'plan_number' => $row[3],
+            'sale_date'=>$row[9],
+            'property_number'=>$row[3],
+            'title_deed_number'=>$row[4],
+            'land_piece_number'=>$row[3],
         ]);
 
         return $user;
     }
+    
 }

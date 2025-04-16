@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Exports\UsersExport;
 use App\Imports\UsersImport;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
-class UserConroller extends Controller
+
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -66,18 +68,28 @@ class UserConroller extends Controller
     }
 
 
+
     public function import(Request $request)
     {
-        $request->validate([
-            'file' => 'required|mimes:xlsx,xls'
-        ]);
-
+      
+        Log::info('وصلنا إلى راوت import-excel');
+    
+        // $request->validate([
+        //     'file' => 'required|mimes:xlsx,xls',
+        // ]);
+    
+        Log::info('وصلنا إلى راوت import-excel');
+    
         Excel::import(new UsersImport, $request->file('file'));
-
+    
+        Log::info('وصلنا إلى راوت import-excel');
+    
         return back()->with('success', 'تم رفع الملف بنجاح!');
     }
+    
+    
 
-    public function export(){
-        return Excel::download(new UsersExport(),'export.xlsx');
-    }
+    // public function export(){
+    //     return Excel::download(new UsersExport(),'export.xlsx');
+    // }
 }

@@ -6,7 +6,8 @@ use App\Exports\UsersExport;
 use App\Imports\UsersImport;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
-use App\Http\Controllers\UserConroller;
+use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Log;
 
 Route::get('/', function () {
     return view('welcome');
@@ -26,5 +27,27 @@ Route::get('/send-notification', function () {
 })->middleware('auth');
 
 
-Route::post('/import-excel',[UserConroller::class,'import'])->name('upload.file');
-Route::get('/export-excel',[UserConroller::class,'export']);
+// Route::middleware(['auth'])->group(function () {
+//     Route::post('/import-excel', function () {
+//         // سجل رسالة في اللوق لنتأكد أنه تم الوصول للراوت
+//         Log::info('وصلنا إلى راوت import-excel');
+
+//         // أرسل استجابة مباشرة لتأكيد الوصول
+//         return response()->json(['message' => 'تم الوصول إلى الراوت import-excel بنجاح']);
+//     })->name('upload.file');
+// });
+
+// 
+Route::get('/excel-upload', function () {
+    return view('excel-upload'); // تأكد من اسم الملف
+});
+
+Route::post('/import-excel', [UserController::class, 'import'])->name('upload.file');
+
+
+
+Route::get('/export-excel',[UserController::class,'export']);
+
+Route::post('/test-upload', function () {
+    dd('وصل');
+});
