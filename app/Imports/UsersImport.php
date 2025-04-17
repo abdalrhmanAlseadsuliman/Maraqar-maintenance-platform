@@ -13,29 +13,32 @@ class UsersImport implements ToCollection
 {
     public function collection(Collection $rows)
     {
-        // تحويل البيانات إلى مصفوفة والتخزين المؤقت
+        
         $data = $rows->toArray();
         
-        // تجاهل أول صفين: الأول فارغ والثاني فيه عناوين
+        
         $data = array_slice($data, 2);
         
-        // loop على كل صف داخل الملف
+        
         foreach ($data as $index => $row) {
             try {
-                // تأكد أن الصف يحتوي على بيانات حقيقية
+                
                 if (empty(array_filter($row))) {
                     continue;
                 }
-        
-                // توليد بريد عشوائي
+                $formattedDate = \Carbon\Carbon::createFromFormat('d/m/Y', $row[9])->format('Y-m-d');
+
+                // طباعة التاريخ بعد التحويل
+                // dd($formattedDate);
+          
                 $randomEmail = Str::random(10) . '@example.com';
             
-                // إنشاء المستخدم
+                
                 $user = User::create([
                     'name' => $randomEmail,
                     'email' => $randomEmail,
                     'password' => bcrypt('default_password'),
-                    'phone' => $row[6] ?? null, // رقم الموبايل
+                    'phone' => $row[6] ?? null, 
                 ]);
                 logger()->info("تم إنشاء المستخدم برقم ID: {$user->id}");
                 
@@ -44,7 +47,7 @@ class UsersImport implements ToCollection
                     'user_id' => $user->id,
                     'name' => $row[0] ?? '', // اسم العقار
                     'plan_number' => $row[4] ?? '', // رقم المخطط
-                    'sale_date' => $this->parseDate($row[9] ?? null), // تاريخ البيع
+                    'sale_date' => $row[9] ? \Carbon\Carbon::createFromFormat('d/m/Y', $row[9])->format('Y-m-d') : null, // تاريخ البيع
                     'property_number' => $row[1] ?? '', // رقم الشقة
                     'title_deed_number' => $row[2] ?? '', // رقم الصك
                     'land_piece_number' => $row[3] ?? '', // رقم قطعة الأرض
@@ -54,7 +57,7 @@ class UsersImport implements ToCollection
             }
         }
     
-        // فقط للتأكيد بعد الإدخال
+        logger()->info('Import completed successfully.');
        
     }
     
