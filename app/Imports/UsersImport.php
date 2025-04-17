@@ -6,8 +6,6 @@ use App\Models\Property;
 use App\Models\User;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
-use Maatwebsite\Excel\Concerns\ToModel;
-use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
 
@@ -15,15 +13,55 @@ class UsersImport implements ToCollection
 {
     public function collection(Collection $rows)
     {
-        // اطبع كل محتويات الملف كما هي دفعة وحدة
-        dd($rows->toArray());
+        // تحويل البيانات إلى مصفوفة والتخزين المؤقت
+        $data = $rows->toArray();
+      
+
+        // تجاهل أول صفين: الأول فارغ والثاني فيه عناوين
+        $data = array_slice($data, 2);
+        // dd($data);
+
+
+        // loop على كل صف داخل الملف
+        foreach ($data as $index => $row) {
+            try {
+                // تأكد أن الصف يحتوي على بيانات حقيقية
+                if (empty(array_filter($row))) {
+                    continue;
+                }
+
+                // توليد بريد عشوائي
+                $randomEmail = Str::random(10) . '@example.com';
+            
+                // إنشاء المستخدم
+                $user = User::create([
+                    'name' => $randomEmail,
+                    'email' => $randomEmail,
+                    'password' => bcrypt('default_password'),
+                    'phone' => $row[6] ?? null, // رقم الموبايل
+                ]);
+
+                // إنشاء العقار
+                Property::create([
+                    'user_id' => $user->id,
+                    'name' => $row[0] ?? '', // اسم العقار
+                    'plan_number' => $row[4] ?? '', // رقم المخطط
+                    'sale_date' => $this->parseDate($row[9] ?? null), // تاريخ البيع
+                    'property_number' => $row[1] ?? '', // رقم الشقة
+                    'title_deed_number' => $row[2] ?? '', // رقم الصك
+                    'land_piece_number' => $row[3] ?? '', // رقم قطعة الأرض
+                ]);
+            } catch (\Exception $e) {
+                logger()->error('Import Error in row #' . $index . ': ' . $e->getMessage());
+            }
+        }
+
+        // فقط للتأكيد بعد الإدخال
+        dd('تم الاستيراد بنجاح');
     }
-    public function startRow(): int
-{
-    return 2; // تجاهل الصف الأول (العناوين)
-}
-    // لتحويل التاريخ لصيغة مناسبة
-    function parseDate($value)
+
+    // لتحويل التاريخ إلى صيغة مناسبة
+    private function parseDate($value)
     {
         try {
             return Carbon::parse($value)->format('Y-m-d');
@@ -31,33 +69,5 @@ class UsersImport implements ToCollection
             logger()->error("Invalid date: $value");
             return null;
         }
-    }
-
-    public function model(array $row)
-    {
-        dd($row);
-        // جرب أطبع الأعمدة كالتالي لترى القيم الحقيقية
-        // dd($row['رقم_الشقة'], $row['رقم_الصك'], $row['رقم_قطعة_الارض']);
-
-        $randomEmail = Str::random(10) . '@example.com';
-
-        $user = User::create([
-            'name' => $randomEmail,
-            'email' => $randomEmail,
-            'password' => bcrypt('default_password'),
-            'phone' => $row['6'] ?? null,
-        ]);
-
-        Property::create([
-            'user_id' => $user->id,
-            'name' => $row['اسم_العقار'] ?? '',
-            'plan_number' => $row['رقم_المخطط'] ?? '',
-            'sale_date' => $this->parseDate($row['تاريخ_البيع'] ?? null),
-            'property_number' => $row['2'] ?? '',
-            'title_deed_number' => $row['رقم_الصك'] ?? '',
-            'land_piece_number' => $row['رقم_قطعة_الارض'] ?? '',
-        ]);
-
-        return $user;
     }
 }
