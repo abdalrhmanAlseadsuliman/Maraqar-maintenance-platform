@@ -15,13 +15,10 @@ class UsersImport implements ToCollection
     {
         // تحويل البيانات إلى مصفوفة والتخزين المؤقت
         $data = $rows->toArray();
-      
-
+        
         // تجاهل أول صفين: الأول فارغ والثاني فيه عناوين
         $data = array_slice($data, 2);
-        // dd($data);
-
-
+        
         // loop على كل صف داخل الملف
         foreach ($data as $index => $row) {
             try {
@@ -29,7 +26,7 @@ class UsersImport implements ToCollection
                 if (empty(array_filter($row))) {
                     continue;
                 }
-
+        
                 // توليد بريد عشوائي
                 $randomEmail = Str::random(10) . '@example.com';
             
@@ -40,7 +37,8 @@ class UsersImport implements ToCollection
                     'password' => bcrypt('default_password'),
                     'phone' => $row[6] ?? null, // رقم الموبايل
                 ]);
-
+                logger()->info("تم إنشاء المستخدم برقم ID: {$user->id}");
+                
                 // إنشاء العقار
                 Property::create([
                     'user_id' => $user->id,
@@ -55,10 +53,11 @@ class UsersImport implements ToCollection
                 logger()->error('Import Error in row #' . $index . ': ' . $e->getMessage());
             }
         }
-
+    
         // فقط للتأكيد بعد الإدخال
-        dd('تم الاستيراد بنجاح');
+       
     }
+    
 
     // لتحويل التاريخ إلى صيغة مناسبة
     private function parseDate($value)
