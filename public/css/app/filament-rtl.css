@@ -1,21 +1,24 @@
-html {
-    direction: rtl;
-    text-align: right;
-}
+@media only screen and (min-width: 900px) {
+    html {
+        direction: rtl;
+        text-align: right;
+    }
 
-/* تعديل الشريط الجانبي ليكون على اليمين */
-.filament-sidebar {
-    right: 0 !important;
-    left: auto !important;
-}
+    /* تعديل الشريط الجانبي ليكون على اليمين */
+    .filament-sidebar {
+        right: 0 !important;
+        left: auto !important;
+    }
 
-/* تعديل محتوى الصفحة ليكون على اليسار */
-.filament-main {
-    margin-left: 0 !important;
-    margin-right: 16rem !important; /* تأكد من أن القيمة متناسبة مع حجم الـ sidebar */
-}
+    /* تعديل محتوى الصفحة ليكون على اليسار */
+    .filament-main {
+        margin-left: 0 !important;
+        margin-right: 16rem !important; /* تأكد من أن القيمة متناسبة مع حجم الـ sidebar */
+    }
 
-/* تحسين بعض التنسيقات */
-.filament-header {
-    text-align: right !important;
+    /* تحسين بعض التنسيقات */
+    .filament-header {
+        text-align: right !important;
+    }
+
 }

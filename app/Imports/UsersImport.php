@@ -13,16 +13,16 @@ class UsersImport implements ToCollection
 {
     public function collection(Collection $rows)
     {
-        
+
         $data = $rows->toArray();
-        
-        
+
+
         $data = array_slice($data, 2);
-        
-        
+
+
         foreach ($data as $index => $row) {
             try {
-                
+
                 if (empty(array_filter($row))) {
                     continue;
                 }
@@ -30,37 +30,37 @@ class UsersImport implements ToCollection
 
                 // طباعة التاريخ بعد التحويل
                 // dd($formattedDate);
-          
+
                 $randomEmail = Str::random(10) . '@example.com';
-            
-                
+
+
                 $user = User::create([
-                    'name' => $randomEmail,
-                    'email' => $randomEmail,
-                    'password' => bcrypt('default_password'),
-                    'phone' => $row[6] ?? null, 
+                    'name' => $row[5],
+                    'email' => $randomEmail, // استخدم البريد العشوائي هنا
+                    'password' => $row[2] ?? bcrypt('default_password'), // تأكد أن كلمة المرور صالحة
+                    'phone' => $row[6] ?? null,
                 ]);
                 logger()->info("تم إنشاء المستخدم برقم ID: {$user->id}");
-                
+
                 // إنشاء العقار
                 Property::create([
                     'user_id' => $user->id,
-                    'name' => $row[0] ?? '', // اسم العقار
-                    'plan_number' => $row[4] ?? '', // رقم المخطط
+                    'name' => $row[0],
+                    'plan_number' => $row[4],
                     'sale_date' => $row[9] ? \Carbon\Carbon::createFromFormat('d/m/Y', $row[9])->format('Y-m-d') : null, // تاريخ البيع
-                    'property_number' => $row[1] ?? '', // رقم الشقة
-                    'title_deed_number' => $row[2] ?? '', // رقم الصك
-                    'land_piece_number' => $row[3] ?? '', // رقم قطعة الأرض
+                    'property_number' => $row[1],
+                    'title_deed_number' => $row[2],
+                    'land_piece_number' => $row[3]
                 ]);
             } catch (\Exception $e) {
                 logger()->error('Import Error in row #' . $index . ': ' . $e->getMessage());
             }
         }
-    
+
         logger()->info('Import completed successfully.');
-       
+
     }
-    
+
 
     // لتحويل التاريخ إلى صيغة مناسبة
     private function parseDate($value)
