@@ -21,7 +21,9 @@ class FilamentAdminMiddleware
         }
 
 
-        $allowedRoles = array_diff(UserRole::all(), [UserRole::CLIENT]);
+        // $allowedRoles = array_diff(UserRole::all(), [UserRole::CLIENT]);
+        // $allowedRoles = array_diff(UserRole::values(), [UserRole::CLIENT]);
+        $allowedRoles = array_diff(UserRole::values(), ['CLT']);
 
 
         if (!in_array(Auth::user()->role, $allowedRoles)) {

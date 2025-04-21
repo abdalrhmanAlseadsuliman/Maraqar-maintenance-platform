@@ -71,7 +71,9 @@ class UserResource extends Resource
                 Forms\Components\Select::make('role')
                     ->label('مهام المستخدم')
                     ->placeholder('اختر مهام المستخدم')
-                    ->options(UserRole::all())
+                    // ->options(UserRole::all())
+                    ->options(UserRole::options())
+                    ->native(false)
                     ->required(),
             ]);
     }

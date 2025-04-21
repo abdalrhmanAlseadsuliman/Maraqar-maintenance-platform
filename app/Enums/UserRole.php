@@ -1,5 +1,8 @@
 <?php
+
 namespace App\Enums;
+
+use Illuminate\Support\Facades\Auth;
 
 class UserRole
 {
@@ -10,21 +13,42 @@ class UserRole
     public const MAINTTECH  = 'MT';
     public const CLIENT     = 'CLT';
 
-    public static function all(): array
+    public static function options(): array
     {
         return [
-            self::CHAIRMAN,
-            self::EXECDIR,
-            self::ADMIN,
-            self::ACCOUNTANT,
-            self::MAINTTECH,
-            self::CLIENT,
+            'CHR'   => 'رئيس مجلس الإدارة',
+            'EDR'   => 'المدير التنفيذي',
+            'admin' => 'مدير النظام',
+            'ACC'   => 'محاسب',
+            'MT'    => 'فني صيانة',
+            'CLT'   => 'عميل',
         ];
-        // Chairman →   CHR
-        // ExecDir →    EDR
-        // Supervisor → SPV
-        // Accountant → ACC
-        // MaintTech →  MT
-        // Client →     CLT
+    }
+
+    // public static function values(): array
+    // {
+    //     return array_keys(self::options());
+    // }
+
+     public static function values(): array
+    {
+        return array_keys(self::options());
+    }
+
+    public static function label(string $value): ?string
+    {
+        return self::options()[$value] ?? null;
+    }
+
+    public static function is(string $value): bool
+    {
+        return Auth::check() && Auth::user()->role === $value;
     }
 }
+
+// Chairman →   CHR
+// ExecDir →    EDR
+// Supervisor → SPV
+// Accountant → ACC
+// MaintTech →  MT
+// Client →     CLT
