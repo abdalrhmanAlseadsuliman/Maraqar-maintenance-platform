@@ -12,7 +12,7 @@ enum RequestType: string
     public static function getOptions(): array
     {
         return [
-            self::PAINTING->value => 'دهانة',  
+            self::PAINTING->value => 'دهانة',
             self::DOORS->value => 'أبواب',
             self::PLUMBING->value => 'صحية',
         ];

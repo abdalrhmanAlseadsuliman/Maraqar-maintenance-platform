@@ -40,5 +40,5 @@ class MaintenanceRequests extends Model
     {
         return $this->hasMany(MaintenanceSolutionImages::class, 'maintenance_request_id');
     }
-    //
+    
 }

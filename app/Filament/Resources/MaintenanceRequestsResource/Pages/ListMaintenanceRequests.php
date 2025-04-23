@@ -44,7 +44,7 @@ class ListMaintenanceRequests extends ListRecords
     public function table(Table $table): Table
     {
         return $table->columns([
-            TextColumn::make('property_id')->numeric()->sortable(),
+            TextColumn::make('property.owner.name')->sortable(),
             Tables\Columns\TextColumn::make('request_type')
                 ->label('نوع الطلب')
                 ->searchable()

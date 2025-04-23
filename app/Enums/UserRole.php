@@ -25,10 +25,7 @@ class UserRole
         ];
     }
 
-    // public static function values(): array
-    // {
-    //     return array_keys(self::options());
-    // }
+   
 
      public static function values(): array
     {
@@ -46,9 +43,3 @@ class UserRole
     }
 }
 
-// Chairman →   CHR
-// ExecDir →    EDR
-// Supervisor → SPV
-// Accountant → ACC
-// MaintTech →  MT
-// Client →     CLT
