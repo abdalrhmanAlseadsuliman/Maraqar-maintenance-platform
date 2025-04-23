@@ -3,9 +3,14 @@
 namespace App\Filament\User\Resources\MaintenanceRequestsResource\Pages;
 
 use Carbon\Carbon;
+use Filament\Notifications\Actions\Action as NotificationAction;
+use Mokhosh\FilamentRating\Components\Rating;
+use Mokhosh\FilamentRating\RatingTheme;
+use Illuminate\Validation\ValidationException;
 use Filament\Forms\Form;
 use Filament\Actions\Action;
 use App\Models\Property;
+use App\Models\MaintenanceRequests;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -61,6 +66,36 @@ class CreateMaintenanceRequests extends CreateRecord
 
     protected function handleRecordCreation(array $data): \Illuminate\Database\Eloquent\Model
     {
+        $userId = auth()->id();
+
+            // استخراج property_id من البيانات المُرسلة
+            $propertyId = $data['property_id'];
+        
+            // التحقق من وجود طلب سابق غير مقيم
+            $existingUnratedRequest = MaintenanceRequests::whereHas('property', function ($query) use ($userId) {
+                    $query->where('user_id', $userId);
+                })
+                ->where('property_id', $propertyId)
+                ->where('status', 'completed')
+                ->whereNull('rating')
+                ->first();
+                // dd($existingUnratedRequest);
+        
+            // إذا وجد طلب غير مقيم، نمنع إنشاء الطلب الجديد
+            if ($existingUnratedRequest===null) {
+                Notification::make()
+                    ->title('لا يمكنك إرسال طلب جديد')
+                    ->body('يرجى تقييم الطلب السابق قبل إرسال طلب جديد لهذا العقار.')
+                    ->danger()
+                    ->persistent()
+                    ->send();
+                    throw ValidationException::withMessages([
+                        'property_id' => 'يرجى تقييم الطلب السابق قبل إرسال طلب جديد لهذا العقار.',
+                    ]);
+            }
+              
+
+
         $record = static::getModel()::create($data);
 
         if (!empty($this->imagesToSave)) {
@@ -81,11 +116,16 @@ class CreateMaintenanceRequests extends CreateRecord
                 ->send();
         } else {
             Notification::make()
-                ->title('تم تسجيل الطلب')
-                ->body('تم إنشاء الطلب بنجاح.')
-                ->success()
-                ->send();
+            ->title('تم إرسال الطلب بنجاح')
+            ->body('يرجى الانتظار خمس أيام لمعالجة الطلب.')
+            
+            ->persistent()
+            ->actions([
+                NotificationAction::make('close')->label('تم'),
+            ])
+            ->send();
         }
+    
 
         return $record;
     }
@@ -134,7 +174,15 @@ class CreateMaintenanceRequests extends CreateRecord
                     ->directory('maintenance-requests')
                     ->required(),
             ]),
+            Rating::make('rating')
+    ->label('تقييم العميل')
+    ->stars(5) // عدد النجوم
+    ->theme(RatingTheme::Simple) // شكل النجوم (Simple, HalfStars)
+    ->allowZero() // يتيح اختيار 0
+    ->size('lg') // حجم النجوم (xs, sm, md, lg, xl)
+    ->color('warning')->visible(fn (?MaintenanceRequests $record) => $record?->status === 'completed'),
 
         ]);
+        
     }
 }

@@ -8,6 +8,7 @@ use App\Enums\RequestType;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
 use App\Models\MaintenanceRequests;
+use Mokhosh\FilamentRating\Columns\RatingColumn;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Blade;
 use Filament\Tables\Actions\BulkAction;
@@ -62,6 +63,10 @@ class MaintenanceRequestsResource extends Resource
                 Tables\Columns\TextColumn::make('cost')->money()->sortable()->label(' الكلفة '),
                 Tables\Columns\TextColumn::make('created_at')->dateTime()->sortable()->label(' تاريخ تقديم الطلب ')->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')->dateTime()->sortable()->label('تاريخ تعديل الطلب')->toggleable(isToggledHiddenByDefault: true),
+                RatingColumn::make('rating')
+    ->label('تقييم')
+    ->sortable()
+    ->alignCenter(),
                 ImageColumn::make('images')
                     ->label('الصور')
                     ->disk('public')
@@ -115,3 +120,7 @@ class MaintenanceRequestsResource extends Resource
         ];
     }
 }
+
+
+
+

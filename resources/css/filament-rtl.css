@@ -22,3 +22,17 @@
     }
 
 }
+.pointer-events-auto{
+    position: absolute !important;
+ top:200px !important;
+ right: 50px !important;
+z-index: 9999 !important;
+
+}
+
+.fi-no-notification{
+    position: absolute !important;
+    top:200px !important;
+    right: 50px !important;
+   z-index: 0 !important;
+}

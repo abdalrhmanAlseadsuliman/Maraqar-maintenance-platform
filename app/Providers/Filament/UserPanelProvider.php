@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Providers\Filament;
-
+use App\Filament\User\Resources\AllResource\Widgets\CustomWidget;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -26,6 +26,8 @@ class UserPanelProvider extends PanelProvider
         return $panel
             ->id('user')
             ->path('user')
+            ->favicon(asset('white-logo.webp')) 
+            ->brandName('منصة الصيانة') 
             ->login()
             ->colors([
                 'primary' => Color::Amber,
@@ -37,6 +39,7 @@ class UserPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/User/Widgets'), for: 'App\\Filament\\User\\Widgets')
             ->widgets([
+                CustomWidget::class,
                 Widgets\AccountWidget::class,
                 Widgets\FilamentInfoWidget::class,
             ])
@@ -55,4 +58,5 @@ class UserPanelProvider extends PanelProvider
                 Authenticate::class,
             ]);
     }
+  
 }
