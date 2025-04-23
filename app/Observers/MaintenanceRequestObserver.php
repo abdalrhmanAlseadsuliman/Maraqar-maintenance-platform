@@ -14,9 +14,9 @@ class MaintenanceRequestObserver
 
         $admins = User::where('role', 'admin')->get();
 
-        foreach ($admins as $admin) {
-            $admin->notify(new NewPushNotification());
-        }
+        // foreach ($admins as $admin) {
+        //     $admin->notify(new NewPushNotification());
+        // }
         foreach ($admins as $admin) {
             $admin->notify(new NewMaintenanceRequestNotification($request));
         }

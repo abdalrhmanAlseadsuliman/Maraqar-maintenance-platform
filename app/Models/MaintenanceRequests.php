@@ -21,7 +21,7 @@ class MaintenanceRequests extends Model
     protected $fillable = [
         'property_id', 'request_type', 'status', 'submitted_at',
         'technician_visits', 'problem_description', 'technician_notes',
-        'rejection_reason', 'technician_name', 'cost'
+        'rejection_reason', 'technician_name', 'cost','rating'
     ];
 
     public function property()

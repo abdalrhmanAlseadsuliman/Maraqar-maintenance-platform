@@ -19,3 +19,19 @@ html {
 .filament-header {
     text-align: right !important;
 }
+
+
+.pointer-events-auto{
+    position: absolute !important;
+ top:200px !important;
+ right: 250px !important;
+z-index: 9999 !important;
+
+}
+
+.fi-no-notification{
+    position: absolute !important;
+    top:200px !important;
+    right: 250px !important;
+   z-index: 0 !important;
+}
