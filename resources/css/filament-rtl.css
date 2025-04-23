@@ -23,16 +23,18 @@
 
 }
 .pointer-events-auto{
-    position: absolute !important;
- top:200px !important;
- right: 50px !important;
-z-index: 9999 !important;
+    position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
 
 }
 
 .fi-no-notification{
-    position: absolute !important;
-    top:200px !important;
-    right: 50px !important;
-   z-index: 0 !important;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
 }
