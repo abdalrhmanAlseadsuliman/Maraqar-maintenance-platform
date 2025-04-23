@@ -65,12 +65,43 @@ class ViewMaintenanceRequests extends ViewRecord
             Section::make('تفاصيل المشكلة')
                 ->schema([
                     Textarea::make('problem_description')->label('وصف المشكلة')->disabled(),
+
                 ]),
 
-            Section::make('المعلومات الفنية')
+            Section::make('معلومات فني الصيانة')
                 ->schema([
                     TextInput::make('technician_name')->label('اسم الفني')->disabled(),
                     Textarea::make('technician_notes')->label('ملاحظات الفنيين')->disabled(),
+                ]),
+
+            // Section::make('معلومات المستخدم ')
+            //     ->schema([
+            //         TextInput::make('property.owner.name')
+            //             ->label('اسم المالك')
+            //             ->disabled(),
+
+            //         TextInput::make('property.owner.phone')
+            //             ->label('رقم هاتف المالك')
+            //             ->disabled(),
+            //     ]),
+
+            Section::make('معلومات المستخدم ')
+                ->schema([
+                    Placeholder::make('owner_name')
+                        ->label('اسم المالك')
+                        ->content(fn($record) => optional($record->property?->owner)->name ?? '-'),
+
+                    Placeholder::make('owner_phone')
+                        ->label('رقم هاتف المالك')
+                        ->content(fn($record) => optional($record->property?->owner)->phone ?? '-'),
+                ]),
+
+
+
+            Section::make('ملاحظات المدير التنفيذي')
+                ->schema([
+                    Textarea::make('executive_director_notes')
+                        ->label('ملاحظات المدير التنفيذي'),
                 ]),
 
             Section::make('التكلفة والمرفقات')

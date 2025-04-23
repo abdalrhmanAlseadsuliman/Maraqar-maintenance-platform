@@ -103,7 +103,7 @@ class CreateMaintenanceRequests extends CreateRecord
                         ->required(),
                 ]),
 
-            Section::make('المعلومات الفنية')
+            Section::make('معلومات فني الصيانة')
                 ->schema([
                     TextInput::make('technician_visits')
                         ->label('زيارات الفنيين')
@@ -117,7 +117,14 @@ class CreateMaintenanceRequests extends CreateRecord
 
                     Textarea::make('technician_notes')
                         ->label('ملاحظات الفنيين'),
-                ]),
+                ])->visible(fn() => UserRole::is('MT')),
+
+            Section::make('ملاحظات المدير التنفيذي')
+                ->schema([
+                    Textarea::make('executive_director_notes')
+                        ->label('ملاحظات المدير التنفيذي'),
+                ])->visible(fn() => UserRole::is('EDR')),
+
 
             Section::make(' المرفقات')
                 ->schema([
@@ -144,8 +151,9 @@ class CreateMaintenanceRequests extends CreateRecord
                         ->multiple()
                         ->directory('maintenance-requests-cost')
                         ->required(),
-                ])
-                // ->visible(fn() => Auth::user()->role === UserRole::MAINTTECH),
+                ])->visible(fn() => UserRole::is('MT')),
+
+
         ]);
     }
 }

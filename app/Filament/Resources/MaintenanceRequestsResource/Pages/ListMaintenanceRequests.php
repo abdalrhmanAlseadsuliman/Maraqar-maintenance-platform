@@ -44,25 +44,26 @@ class ListMaintenanceRequests extends ListRecords
     public function table(Table $table): Table
     {
         return $table->columns([
-            TextColumn::make('property_id')->numeric()->sortable(),
+            TextColumn::make('property.owner.name')->sortable(),
             Tables\Columns\TextColumn::make('request_type')
-            ->label('نوع الطلب')
-            ->searchable()
-            ->formatStateUsing(fn($state) => RequestType::getOptions()[$state->value] ?? $state->value),
+                ->label('نوع الطلب')
+                ->searchable()
+                ->formatStateUsing(fn($state) => RequestType::getOptions()[$state->value] ?? $state->value),
 
-        Tables\Columns\TextColumn::make('status')
-            ->label('حالة الطلب')
-            ->formatStateUsing(function ($state) {
-                return match ($state) {
-                    'pending' => 'قيد الانتظار',
-                    'in_progress' => 'قيد التنفيذ',
-                    'completed' => 'مكتمل',
-                    'rejected' => 'مرفوض',
-                    default => $state,
-                };
-            }),
+            Tables\Columns\TextColumn::make('status')
+                ->label('حالة الطلب')
+                ->formatStateUsing(function ($state) {
+                    return match ($state) {
+                        'pending' => 'قيد الانتظار',
+                        'in_progress' => 'قيد التنفيذ',
+                        'completed' => 'مكتمل',
+                        'rejected' => 'مرفوض',
+                        default => $state,
+                    };
+                }),
             TextColumn::make('submitted_at')->dateTime()->sortable(),
             TextColumn::make('technician_name')->searchable(),
+            // TextColumn::make('executive_director_notes')->searchable(),
             TextColumn::make('cost')->money()->sortable(),
 
             ImageColumn::make('images')
@@ -99,7 +100,7 @@ class ListMaintenanceRequests extends ListRecords
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make()
-                    ->visible(fn () => Auth::user()->can('delete', MaintenanceRequests::class)),
+                        ->visible(fn() => Auth::user()->can('delete', MaintenanceRequests::class)),
                     // ->visible(fn () => Auth::user()?->can('delete', MaintenanceRequests::first()))
 
                 ]),
@@ -119,6 +120,4 @@ class ListMaintenanceRequests extends ListRecords
                     })
             ]);
     }
-
 }
-
