@@ -31,7 +31,7 @@ class MaintenanceRequestPolicy
         return !in_array($user->role, [
             UserRole::CHAIRMAN,
             UserRole::ACCOUNTANT,
-            UserRole:: CLIENT
+            
         ]);
     }
 

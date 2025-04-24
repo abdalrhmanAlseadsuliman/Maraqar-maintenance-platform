@@ -40,7 +40,7 @@ class MaintenanceRequestsResource extends Resource
                 Tables\Columns\TextColumn::make('property.name')->sortable()->label('اسم العقار'),
                 // Tables\Columns\TextColumn::make('request_type')->searchable()->label('نوع الطلب'),
                 // Tables\Columns\TextColumn::make('status')->label('حالة الطلب'),
-                
+
                 Tables\Columns\TextColumn::make('request_type')
                     ->label('نوع الطلب')
                     ->searchable()
@@ -77,7 +77,7 @@ class MaintenanceRequestsResource extends Resource
 
             ->actions([
                 Tables\Actions\ViewAction::make()->label('عرض'),
-                Tables\Actions\EditAction::make()->label('تعديل'),
+                Tables\Actions\EditAction::make()->label('تقييم')->visible(fn(?MaintenanceRequests $record) => $record?->status === 'completed'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

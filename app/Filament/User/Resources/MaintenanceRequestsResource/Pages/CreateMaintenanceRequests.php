@@ -70,7 +70,7 @@ class CreateMaintenanceRequests extends CreateRecord
 
             // استخراج property_id من البيانات المُرسلة
             $propertyId = $data['property_id'];
-        
+
             // التحقق من وجود طلب سابق غير مقيم
             $existingUnratedRequest = MaintenanceRequests::whereHas('property', function ($query) use ($userId) {
                     $query->where('user_id', $userId);
@@ -80,9 +80,9 @@ class CreateMaintenanceRequests extends CreateRecord
                 ->whereNull('rating')
                 ->first();
                 // dd($existingUnratedRequest);
-        
+
             // إذا وجد طلب غير مقيم، نمنع إنشاء الطلب الجديد
-            if ($existingUnratedRequest===null) {
+            if ($existingUnratedRequest !== null) {
                 Notification::make()
                     ->title('لا يمكنك إرسال طلب جديد')
                     ->body('يرجى تقييم الطلب السابق قبل إرسال طلب جديد لهذا العقار.')
@@ -93,7 +93,7 @@ class CreateMaintenanceRequests extends CreateRecord
                         'property_id' => 'يرجى تقييم الطلب السابق قبل إرسال طلب جديد لهذا العقار.',
                     ]);
             }
-              
+
 
 
         $record = static::getModel()::create($data);
@@ -118,14 +118,14 @@ class CreateMaintenanceRequests extends CreateRecord
             Notification::make()
             ->title('تم إرسال الطلب بنجاح')
             ->body('يرجى الانتظار خمس أيام لمعالجة الطلب.')
-            
+
             ->persistent()
             ->actions([
                 NotificationAction::make('close')->label('تم'),
             ])
             ->send();
         }
-    
+
 
         return $record;
     }
@@ -183,6 +183,6 @@ class CreateMaintenanceRequests extends CreateRecord
     ->color('warning')->visible(fn (?MaintenanceRequests $record) => $record?->status === 'completed'),
 
         ]);
-        
+
     }
 }
