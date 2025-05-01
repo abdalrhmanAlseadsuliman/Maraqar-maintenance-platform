@@ -4,6 +4,7 @@ namespace App\Providers\Filament;
 use App\Http\Middleware\FilamentAdminMiddleware;
 
 use Filament\Http\Middleware\Authenticate;
+use App\Filament\Auth\Login;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -29,7 +30,8 @@ class AdminPanelProvider extends PanelProvider
             
             ->id('admin')
             ->path('admin')
-            ->login()
+            ->login(Login::class)
+            ->brandLogo(fn () => asset('white-logo.webp'))
             // ->layoutDirection('rtl')
             ->colors([
                 'primary' => Color::Amber,

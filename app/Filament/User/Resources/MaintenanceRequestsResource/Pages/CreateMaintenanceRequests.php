@@ -8,6 +8,7 @@ use Mokhosh\FilamentRating\Components\Rating;
 use Mokhosh\FilamentRating\RatingTheme;
 use Illuminate\Validation\ValidationException;
 use Filament\Forms\Form;
+use App\Enums\RequestType;
 use Filament\Actions\Action;
 use App\Models\Property;
 use App\Models\MaintenanceRequests;
@@ -67,6 +68,7 @@ class CreateMaintenanceRequests extends CreateRecord
     protected function handleRecordCreation(array $data): \Illuminate\Database\Eloquent\Model
     {
         $userId = auth()->id();
+        // dd($data);
 
             // استخراج property_id من البيانات المُرسلة
             $propertyId = $data['property_id'];
@@ -106,25 +108,52 @@ class CreateMaintenanceRequests extends CreateRecord
 
         $property = Property::find($record->property_id);
 
-        if ($property && abs(now()->diffInYears(Carbon::parse($property->sale_date))) >= 1) {
-            $record->update(['status' => 'rejected']);
+if ($property) {
+    $yearsSincePurchase = abs(now()->diffInYears(Carbon::parse($property->sale_date)));
+    $requestType = $record->request_type instanceof \BackedEnum
+    ? $record->request_type->value
+    : $record->request_type;
 
-            Notification::make()
-                ->title('طلب مرفوض!')
-                ->body('تم رفض طلب الصيانة لأن تاريخ شراء العقار يتجاوز عامًا.')
-                ->danger()
-                ->send();
-        } else {
-            Notification::make()
-            ->title('تم إرسال الطلب بنجاح')
-            ->body('يرجى الانتظار خمس أيام لمعالجة الطلب.')
 
-            ->persistent()
-            ->actions([
-                NotificationAction::make('close')->label('تم'),
-            ])
+    $maxYears = match ($requestType) {
+        RequestType::PAINTING->value => 1,
+        RequestType::DOORS->value => 1,
+        RequestType::PLUMBING->value => 2,
+        RequestType::ELEC->value => 2,
+        RequestType::STRUCTURE->value => 10,
+        default => null,
+    };
+    // dd($yearsSincePurchase, $maxYears);
+
+    if ($maxYears !== null && $yearsSincePurchase >= $maxYears) {
+        $requestTypeValue = $record->request_type instanceof \BackedEnum
+    ? $record->request_type->value
+    : $record->request_type;
+        $typeName = RequestType::getOptions()[$requestTypeValue] ?? 'غير معروف';
+        $message = "تم رفض طلب الصيانة لأن نوع الطلب هو ($typeName) وتاريخ شراء العقار يتجاوز {$maxYears} سنة.";
+
+        Notification::make()
+            ->title('طلب مرفوض!')
+            ->body($message)
+            ->danger()
             ->send();
-        }
+
+        throw ValidationException::withMessages([
+            'property_id' => $message,
+        ]);
+    }
+}
+
+// ✅ إشعار النجاح يُرسل دائمًا بعد تحقق كل الشروط وعدم وجود سبب للرفض
+Notification::make()
+    ->title('تم إرسال الطلب بنجاح')
+    ->body('يرجى الانتظار خمس أيام لمعالجة الطلب.')
+    ->danger()
+    ->persistent()
+    ->actions([
+        NotificationAction::make('close')->label('تم'),
+    ])
+    ->send();
 
 
         return $record;
