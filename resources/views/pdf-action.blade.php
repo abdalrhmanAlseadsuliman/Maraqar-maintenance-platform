@@ -17,6 +17,7 @@
             font-family: 'Amiri', sans-serif;
             direction: rtl;
             text-align: right;
+            margin-bottom: 150px; /* مسافة لترك مكان للفوتر */
         }
 
         .container {
@@ -38,13 +39,32 @@
             height: 100px;
             object-fit: cover;
         }
+
+        .header-img {
+            width: 100%;
+            height: auto;
+        }
+
+        /* هذه هي التعديلات المهمة للفوتر */
+        .footer-img {
+            position: fixed;
+            bottom: -50px;
+            left: 0;
+            right: 0;
+            width: 100%;
+            height: auto;
+        }
+       
     </style>
 </head>
 <body>
 
+    {{-- صورة الترويسة العليا --}}
+    <img src="{{ public_path('mar/header.jpg') }}" class="header-img">
+
     <h2 style="text-align: center;">تقرير طلبات الصيانة</h2>
 
-    <table class="container">
+    <table class="container table-height" >
         <thead>
             <tr>
                 <th>المعرف</th>
@@ -59,24 +79,27 @@
             </tr>
         </thead>
         <tbody>
-                <tr>
-                    <td>{{ $record->id }}</td>
-                    <td>{{ $record->request_type }}</td>
-                    <td>{{ $record->status }}</td>
-                    <td>{{ $record->submitted_at }}</td>
-                    <td>{{ $record->technician_visits }}</td>
-                    <td>{{ $record->technician_name }}</td>
-                    <td>${{ number_format($record->cost, 2) }}</td>
-                    <td>{{ $record->problem_description }}</td>
-                    <td>
-                        @foreach ($record->images as $image)
-                            <img src="{{ public_path('storage/' . $image->image_path) }}" class="image">
-                        @endforeach
-                    </td>
-                </tr>
-
+            <tr>
+                <td>{{ $record->id }}</td>
+                <td>{{ $record->request_type }}</td>
+                <td>{{ $record->status }}</td>
+                <td>{{ $record->submitted_at }}</td>
+                <td>{{ $record->technician_visits }}</td>
+                <td>{{ $record->technician_name }}</td>
+                <td>${{ number_format($record->cost, 2) }}</td>
+                <td>{{ $record->problem_description }}</td>
+                <td>
+                    @foreach ($record->images as $image)
+                        <img src="{{ public_path('storage/' . $image->image_path) }}" class="image">
+                    @endforeach
+                </td>
+            </tr>
         </tbody>
     </table>
+
+    <footer class="footer-img">
+    <img src="{{ public_path('mar/footer.jpg') }}" >
+</footer>
 
 </body>
 </html>
