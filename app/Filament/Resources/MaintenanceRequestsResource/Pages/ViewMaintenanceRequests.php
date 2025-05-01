@@ -42,6 +42,16 @@ class ViewMaintenanceRequests extends ViewRecord
         ];
     }
 
+
+    protected function mutateFormDataBeforeFill(array $data): array
+    {
+        $data['owner_name'] = $this->record->property?->owner?->name ?? '-';
+        $data['owner_phone'] = $this->record->property?->owner?->phone ?? '-';
+
+        return $data;
+    }
+
+
     public function form(Form $form): Form
     {
         //  dd($form);
@@ -53,11 +63,13 @@ class ViewMaintenanceRequests extends ViewRecord
                     Select::make('status')
                         ->label('حالة الطلب')
                         ->options([
-                            'pending' => 'قيد الانتظار',
-                            'in_progress' => 'قيد التنفيذ',
+                            'pending' => 'تم الاستلام',
+                            'in_progress' => 'جاري العمل',
                             'completed' => 'مكتمل',
                         ])
                         ->disabled(),
+
+                    Textarea::make('status_message')->label('رسالة الرفض')->disabled(),
 
                     DateTimePicker::make('submitted_at')->label('تاريخ الإرسال')->disabled(),
                 ]),
@@ -85,16 +97,21 @@ class ViewMaintenanceRequests extends ViewRecord
             //             ->disabled(),
             //     ]),
 
-            Section::make('معلومات المستخدم ')
-                ->schema([
-                    Placeholder::make('owner_name')
-                        ->label('اسم المالك')
-                        ->content(fn($record) => optional($record->property?->owner)->name ?? '-'),
 
-                    Placeholder::make('owner_phone')
+
+            Section::make('معلومات المستخدم')
+                ->schema([
+                    TextInput::make('owner_name')
+                        ->label('اسم المالك')
+                        ->default(fn($record) => optional($record->property?->owner)->name ?? '-')
+                        ->disabled(),
+
+                    TextInput::make('owner_phone')
                         ->label('رقم هاتف المالك')
-                        ->content(fn($record) => optional($record->property?->owner)->phone ?? '-'),
+                        ->default(fn($record) => optional($record->property?->owner)->phone ?? '-')
+                        ->disabled(),
                 ]),
+
 
 
 

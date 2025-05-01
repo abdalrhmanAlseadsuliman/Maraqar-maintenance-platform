@@ -11,36 +11,35 @@ use Illuminate\Notifications\Messages\BroadcastMessage;
 
 class NewMaintenanceRequestNotification extends Notification
 {
-    // use Queueable;
+    protected MaintenanceRequests $request;
+    protected string $title;
+    protected string $body;
 
-    protected $request;
-
-    public function __construct(MaintenanceRequests $request)
+    public function __construct(MaintenanceRequests $request, string $title = 'طلب صيانة جديد',  $body = null)
     {
         $this->request = $request;
+        $this->title = $title;
+        $this->body = $body ?? "تم استلام طلب صيانة جديد برقم: " . $request->id;
     }
 
-    // نرسل عبر database + broadcast معًا
     public function via($notifiable)
     {
         return ['database', 'broadcast'];
     }
 
-    // إشعار يظهر في لوحة التحكم
     public function toDatabase($notifiable): array
     {
         return FilamentNotification::make()
-            ->title('طلب صيانة جديد')
-            ->body("تم استلام طلب صيانة جديد برقم: " . $this->request->id)
+            ->title($this->title)
+            ->body($this->body)
             ->getDatabaseMessage();
     }
 
-    // إشعار حي (live real-time)
     public function toBroadcast($notifiable): BroadcastMessage
     {
         return FilamentNotification::make()
-            ->title('طلب صيانة جديد')
-            ->body("تم استلام طلب صيانة جديد برقم: " . $this->request->id)
+            ->title($this->title)
+            ->body($this->body)
             ->getBroadcastMessage();
     }
 }

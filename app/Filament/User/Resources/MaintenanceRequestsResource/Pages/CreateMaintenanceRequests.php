@@ -156,7 +156,7 @@ class CreateMaintenanceRequests extends CreateRecord
                     ->required(),
                 Select::make('status')
                     ->label('حالة الطلب')
-                    ->options(['pending' => 'قيد الانتظار'])
+                    ->options(['pending' => 'تم الاستلام'])
                     ->default('pending')
                     ->disabled()
                     ->required(),

@@ -9,8 +9,21 @@ use Illuminate\Notifications\Notification;
 use NotificationChannels\WebPush\WebPushMessage;
 use NotificationChannels\WebPush\WebPushChannel;
 
-class NewPushNotification extends Notification 
+
+class NewPushNotification extends Notification implements ShouldQueue
 {
+    use Queueable;
+    protected string $title;
+    protected string $body;
+    protected string $url;
+
+    public function __construct(string $title = 'طلب صيانة جديد', string $body = 'تم استلام طلب جديد! اضغط لعرض التفاصيل.', string $url = '/maintenance/requests')
+    {
+        $this->title = $title;
+        $this->body = $body;
+        $this->url = $url;
+    }
+
     public function via($notifiable)
     {
         return [WebPushChannel::class];
@@ -19,9 +32,9 @@ class NewPushNotification extends Notification
     public function toWebPush($notifiable, $notification)
     {
         return (new WebPushMessage)
-            ->title('طلب صيانة جديد')
-            ->body('تم استلام طلب جديد! اضغط لعرض التفاصيل.')
-            ->action('عرض الطلب', url('/maintenance/requests'))
+            ->title($this->title)
+            ->body($this->body)
+            ->action('عرض الطلب', url($this->url))
             ->icon(asset('images/logo.png'))
             ->badge(asset('images/badge.png'))
             ->data(['id' => $notification->id]);

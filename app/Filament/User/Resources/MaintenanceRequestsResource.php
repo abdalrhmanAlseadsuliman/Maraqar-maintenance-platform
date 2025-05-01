@@ -50,8 +50,8 @@ class MaintenanceRequestsResource extends Resource
                     ->label('حالة الطلب')
                     ->formatStateUsing(function ($state) {
                         return match ($state) {
-                            'pending' => 'قيد الانتظار',
-                            'in_progress' => 'قيد التنفيذ',
+                            'pending' => 'تم الاستلام',
+                            'in_progress' => 'جاري العمل',
                             'completed' => 'مكتمل',
                             'rejected' => 'مرفوض',
                             default => $state,

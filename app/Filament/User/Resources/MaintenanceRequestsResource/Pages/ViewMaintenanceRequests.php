@@ -53,8 +53,8 @@ class ViewMaintenanceRequests extends ViewRecord
                     Select::make('status')
                         ->label('حالة الطلب')
                         ->options([
-                            'pending' => 'قيد الانتظار',
-                            'in_progress' => 'قيد التنفيذ',
+                            'pending' => 'تم الاستلام',
+                            'in_progress' => 'جاري العمل',
                             'completed' => 'مكتمل',
                         ])
                         ->disabled(),

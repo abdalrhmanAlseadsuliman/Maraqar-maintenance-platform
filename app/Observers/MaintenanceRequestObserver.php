@@ -17,8 +17,18 @@ class MaintenanceRequestObserver
         // foreach ($admins as $admin) {
         //     $admin->notify(new NewPushNotification());
         // }
+
         foreach ($admins as $admin) {
-            $admin->notify(new NewMaintenanceRequestNotification($request));
+            $admin->notify(new NewMaintenanceRequestNotification(
+                $request,
+                'تم تعديل طلب صيانة',
+                'تم تعديل حالة طلب الصيانة رقم: ' . $request->id
+            ));
+            $admin->notify(new NewPushNotification(
+                'تم تعديل طلب صيانة',
+                'تم تعديل حالة الطلب، اضغط لعرض التفاصيل.',
+                '/maintenance/requests/' . $request->id
+            ));
         }
     }
     public function edited(MaintenanceRequests $request)

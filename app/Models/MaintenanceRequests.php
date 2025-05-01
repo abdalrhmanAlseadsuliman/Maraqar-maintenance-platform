@@ -22,7 +22,7 @@ class MaintenanceRequests extends Model
         'property_id', 'request_type', 'status', 'submitted_at',
         'technician_visits', 'problem_description', 'technician_notes',
         'rejection_reason', 'technician_name', 'cost',
-        'executive_director_notes',
+        'executive_director_notes', 'status_message','technician_messages'
     ];
 
     public function property()

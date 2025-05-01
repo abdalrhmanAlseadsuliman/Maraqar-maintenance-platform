@@ -54,14 +54,15 @@ class ListMaintenanceRequests extends ListRecords
                 ->label('حالة الطلب')
                 ->formatStateUsing(function ($state) {
                     return match ($state) {
-                        'pending' => 'قيد الانتظار',
-                        'in_progress' => 'قيد التنفيذ',
+                        'pending' => 'تم الاستلام',
+                        'in_progress' => 'جاري العمل',
                         'completed' => 'مكتمل',
                         'rejected' => 'مرفوض',
                         default => $state,
                     };
                 }),
-            TextColumn::make('submitted_at')->dateTime()->sortable(),
+                TextColumn::make('submitted_at')->dateTime()->sortable(),
+                TextColumn::make('status_message')->sortable(),
             TextColumn::make('technician_name')->searchable(),
             // TextColumn::make('executive_director_notes')->searchable(),
             TextColumn::make('cost')->money()->sortable(),
