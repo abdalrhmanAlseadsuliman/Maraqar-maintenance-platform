@@ -2,14 +2,10 @@
 <html lang="ar">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>تقرير طلبات الصيانة</title>
     <style>
         @font-face {
             font-family: 'Amiri';
-            font-style: normal;
-            font-weight: 400;
             src: url('{{ public_path('fonts/Amiri-Regular.ttf') }}') format('truetype');
         }
 
@@ -19,67 +15,46 @@
             text-align: right;
         }
 
-        .container {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .container, .container th, .container td {
-            border: 1px solid black;
+        .record {
+            margin-bottom: 20px;
             padding: 10px;
+            border: 1px solid #ccc;
         }
 
-        .container th {
-            background-color: #f0f0f0;
+        .record h3 {
+            margin-bottom: 10px;
+            color: #2c3e50;
         }
 
-        .image {
-            width: 100px;
-            height: 100px;
-            object-fit: cover;
+        .record p {
+            margin: 4px 0;
+        }
+
+        hr {
+            margin: 20px 0;
+            border: none;
+            border-top: 1px dashed #aaa;
         }
     </style>
 </head>
 <body>
 
-    <h2 style="text-align: center;">تقرير طلبات الصيانة</h2>
+    <h2 style="text-align: center;">قائمة طلبات الصيانة</h2>
 
-    <table class="container">
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>المعرف</th>
-                <th>نوع الطلب</th>
-                <th>الحالة</th>
-                <th>تاريخ الإرسال</th>
-                <th>عدد زيارات الفني</th>
-                <th>اسم الفني</th>
-                <th>التكلفة</th>
-                <th>الوصف</th>
-                <th>الصورة</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($records as $index => $record)
-                <tr>
-                    <td>{{ $index + 1 }}</td>
-                    <td>{{ $record->id }}</td>
-                    <td>{{ $record->request_type }}</td>
-                    <td>{{ $record->status }}</td>
-                    <td>{{ $record->submitted_at }}</td>
-                    <td>{{ $record->technician_visits }}</td>
-                    <td>{{ $record->technician_name }}</td>
-                    <td>${{ number_format($record->cost, 2) }}</td>
-                    <td>{{ $record->problem_description }}</td>
-                    <td>
-                        @foreach ($record->images as $image)
-                            <img src="{{ public_path('storage/' . $image->image_path) }}" class="image">
-                        @endforeach
-                    </td>
-                </tr>
-            @endforeach
-        </tbody>
-    </table>
+    @foreach ($records as $index => $record)
+        <div class="record">
+            <h3>طلب رقم {{ $record->id }} ({{ $index + 1 }})</h3>
+            <p><strong>اسم مالك العقار:</strong> {{ $record->property->owner->name ?? 'غير متوفر' }}</p>
+            <p><strong>نوع الطلب:</strong> {{ $record->request_type }}</p>
+            <p><strong>الحالة:</strong> {{ $record->status }}</p>
+            <p><strong>تاريخ الإرسال:</strong> {{ $record->submitted_at }}</p>
+            <p><strong>عدد زيارات الفني:</strong> {{ $record->technician_visits }}</p>
+            <p><strong>اسم الفني:</strong> {{ $record->technician_name }}</p>
+            <p><strong>التكلفة:</strong> ${{ number_format($record->cost, 2) }}</p>
+            <p><strong>الوصف:</strong> {{ $record->problem_description }}</p>
+        </div>
+        <hr>
+    @endforeach
 
 </body>
 </html>
