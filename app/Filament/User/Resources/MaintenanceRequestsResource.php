@@ -79,23 +79,24 @@ class MaintenanceRequestsResource extends Resource
                 Tables\Actions\ViewAction::make()->label('عرض'),
                 Tables\Actions\EditAction::make()->label('تقييم')->visible(fn(?MaintenanceRequests $record) => $record?->status === 'completed'),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make()
-                        ->visible(fn() => Auth::user()->can('delete', MaintenanceRequests::class)),
-                ]),
-                BulkAction::make('Export to PDF')
-                    ->action(function ($records) {
-                        $html = Blade::render('pdf-bulk', ['records' => $records]);
-                        $mpdf = new Mpdf([
-                            'mode' => 'utf-8',
-                            'format' => 'A4',
-                            'default_font' => 'dejavusans',
-                        ]);
-                        $mpdf->WriteHTML($html);
-                        return response()->streamDownload(fn() => print($mpdf->Output('', 'S')), 'maintenance-requests.pdf');
-                    }),
-            ]);
+            ;
+            // ->bulkActions([
+            //     Tables\Actions\BulkActionGroup::make([
+            //         Tables\Actions\DeleteBulkAction::make()
+            //             ->visible(fn() => Auth::user()->can('delete', MaintenanceRequests::class)),
+            //     ]),
+            //     BulkAction::make('Export to PDF')
+            //         ->action(function ($records) {
+            //             $html = Blade::render('pdf-bulk', ['records' => $records]);
+            //             $mpdf = new Mpdf([
+            //                 'mode' => 'utf-8',
+            //                 'format' => 'A4',
+            //                 'default_font' => 'dejavusans',
+            //             ]);
+            //             $mpdf->WriteHTML($html);
+            //             return response()->streamDownload(fn() => print($mpdf->Output('', 'S')), 'maintenance-requests.pdf');
+            //         }),
+            // ]);
     }
 
     public static function getEloquentQuery(): Builder
