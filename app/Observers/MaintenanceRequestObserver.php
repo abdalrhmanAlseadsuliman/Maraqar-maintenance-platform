@@ -21,14 +21,15 @@ class MaintenanceRequestObserver
         foreach ($admins as $admin) {
             $admin->notify(new NewMaintenanceRequestNotification(
                 $request,
-                'تم تعديل طلب صيانة',
-                'تم تعديل حالة طلب الصيانة رقم: ' . $request->id
+                'تم استقبال طلب جديد',
+                'تم استقال طلب جديد رقم ' . $request->id,
             ));
             $admin->notify(new NewPushNotification(
-                'تم تعديل طلب صيانة',
-                'تم تعديل حالة الطلب، اضغط لعرض التفاصيل.',
-                '/maintenance/requests/' . $request->id
+                'تم استقبال طلب جديد',
+                'تم استقبال طلب جديد',
+                '/user/maintenance-requests/' . $request->id
             ));
+
         }
     }
     public function edited(MaintenanceRequests $request)

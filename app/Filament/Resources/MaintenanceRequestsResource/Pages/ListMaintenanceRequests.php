@@ -61,11 +61,11 @@ class ListMaintenanceRequests extends ListRecords
                         default => $state,
                     };
                 }),
-                TextColumn::make('submitted_at')->dateTime()->sortable(),
-                TextColumn::make('status_message')->sortable(),
-            TextColumn::make('technician_name')->searchable(),
+                TextColumn::make('submitted_at')->label('تاريخ الارسال')->dateTime()->sortable(),
+
+            TextColumn::make('technician_name')->label( 'تاريخ الارسال')->searchable(),
             // TextColumn::make('executive_director_notes')->searchable(),
-            TextColumn::make('cost')->money()->sortable(),
+            TextColumn::make('cost')->money()->label('الكلفة')->sortable(),
 
             ImageColumn::make('images')
                 ->label('الصور')
@@ -94,7 +94,7 @@ class ListMaintenanceRequests extends ListRecords
                         $mpdf->WriteHTML($html);
                         return response()->streamDownload(function () use ($mpdf) {
                             echo $mpdf->Output('', 'S');
-                        }, 'hdhg' . '.pdf');
+                        }, 'طلب صيانة' .$record->id. '.pdf');
                     }),
 
             ])
@@ -117,7 +117,7 @@ class ListMaintenanceRequests extends ListRecords
                         $mpdf->WriteHTML($html);
                         return response()->streamDownload(function () use ($mpdf) {
                             echo $mpdf->Output('', 'S');
-                        }, 'hdhg' . '.pdf');
+                        }, 'طلبات صيانة' . '.pdf');
                     })
             ]);
     }

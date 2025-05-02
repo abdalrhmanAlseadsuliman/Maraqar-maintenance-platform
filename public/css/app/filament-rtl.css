@@ -4,6 +4,11 @@
         text-align: right;
     }
 
+    .fi-topbar{
+        direction: ltr;
+
+    }
+
     /* تعديل الشريط الجانبي ليكون على اليمين */
     .filament-sidebar {
         right: 0 !important;
@@ -32,7 +37,7 @@
   z-index: 9999;
 .fi-status-danger{
     position: fixed;
-  top: 50%;         
+  top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 9999;
@@ -45,7 +50,7 @@
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 1;
-} */
+}
     position: fixed;
     top: 50%;
     left: 50%;

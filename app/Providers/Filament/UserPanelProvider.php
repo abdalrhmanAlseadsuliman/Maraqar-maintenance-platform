@@ -27,8 +27,8 @@ class UserPanelProvider extends PanelProvider
         return $panel
             ->id('user')
             ->path('user')
-            ->favicon(asset('white-logo.webp')) 
-            ->brandName('منصة الصيانة') 
+            ->favicon(asset('white-logo.webp'))
+            ->brandLogo(fn () => asset('white-logo.webp'))
             ->login(Login::class)
             ->colors([
                 'primary' => Color::Amber,
@@ -42,7 +42,7 @@ class UserPanelProvider extends PanelProvider
             ->widgets([
                 CustomWidget::class,
                 Widgets\AccountWidget::class,
-                Widgets\FilamentInfoWidget::class,
+               
             ])
             ->middleware([
                 EncryptCookies::class,
@@ -59,5 +59,5 @@ class UserPanelProvider extends PanelProvider
                 Authenticate::class,
             ]);
     }
-  
+
 }

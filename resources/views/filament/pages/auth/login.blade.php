@@ -24,7 +24,7 @@
 
     {{-- ✅ زر العودة للصفحة الرئيسية --}}
     <div style="text-align: center; margin-top: 1.5rem;">
-        <a href="{{ url('/') }}"
+        <a href="https://maraqar.com"
            style="display: inline-block; padding: 10px 25px; background-color: #3b82f6; color: white; border-radius: 8px; text-decoration: none;">
             العودة إلى الصفحة الرئيسية
         </a>

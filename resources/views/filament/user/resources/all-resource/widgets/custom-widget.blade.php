@@ -18,9 +18,20 @@
                 height: 100%;
                 object-fit: cover;
             }
+            .title{
+                margin-bottom: 10px;
+            }
         </style>
 
         {{-- ✅ السلايدر --}}
+        <body>
+        <div class=container-fluid>
+            <div class="title">
+            <h3>  تعليمات دليل الاستخدام </h3>
+        </div>
+
+
+
         <div class="swiper mySwiper mt-4">
             <div class="swiper-wrapper">
                 {{-- ✅ تكرار نفس الصورة للتجربة --}}
@@ -38,6 +49,8 @@
             {{-- ✅ النقاط --}}
             <div class="swiper-pagination"></div>
         </div>
+    </div>
+</body>
 
         {{-- ✅ تضمين Swiper JS من CDN --}}
         <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>

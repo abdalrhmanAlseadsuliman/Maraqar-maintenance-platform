@@ -68,7 +68,7 @@ class EditMaintenanceRequests extends EditRecord
                 $user->notify(new NewPushNotification(
                     title: 'تم رفض طلب الصيانة رقم ' . $record->id,
                     body: $record->status_message,
-                    url: 'user/maintenance-requests/' . $record->id
+                    url: '/user/maintenance-requests/' . $record->id
                 ));
             }
         }if ($user && $record->technician_messages) {
@@ -80,7 +80,7 @@ class EditMaintenanceRequests extends EditRecord
             $user->notify(new NewPushNotification(
                 title: 'رسالة من الفني بخصوص طلب الصيانة رقم ' . $record->id,
                 body: $record->technician_messages,
-                url: 'user/maintenance-requests/' . $record->id
+                url: '/user/maintenance-requests/' . $record->id
             ));
         }
 

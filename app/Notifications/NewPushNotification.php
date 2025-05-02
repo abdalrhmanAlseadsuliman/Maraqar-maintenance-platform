@@ -35,8 +35,8 @@ class NewPushNotification extends Notification implements ShouldQueue
             ->title($this->title)
             ->body($this->body)
             ->action('عرض الطلب', url($this->url))
-            ->icon(asset('images/logo.png'))
-            ->badge(asset('images/badge.png'))
+            ->icon(asset('white-logo.webp'))
+            ->badge(asset('white-logo.webp'))
             ->data(['id' => $notification->id]);
     }
 }

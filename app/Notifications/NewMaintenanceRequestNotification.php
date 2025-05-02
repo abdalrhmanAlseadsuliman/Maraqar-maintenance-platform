@@ -8,6 +8,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Filament\Notifications\Notification as FilamentNotification;
 use App\Models\MaintenanceRequests;
 use Illuminate\Notifications\Messages\BroadcastMessage;
+use Filament\Notifications\Actions\Action;
 
 class NewMaintenanceRequestNotification extends Notification
 {
@@ -32,6 +33,11 @@ class NewMaintenanceRequestNotification extends Notification
         return FilamentNotification::make()
             ->title($this->title)
             ->body($this->body)
+            ->actions([
+                Action::make('عرض الطلب')
+                    ->button()
+                    ->url(url("/user/maintenance-requests/{$this->request->id}"), shouldOpenInNewTab: false)
+            ])
             ->getDatabaseMessage();
     }
 
@@ -40,6 +46,12 @@ class NewMaintenanceRequestNotification extends Notification
         return FilamentNotification::make()
             ->title($this->title)
             ->body($this->body)
+            ->actions([
+                Action::make('عرض  الطلب')
+                    ->button()
+                    ->url(url("/user/maintenance-requests/{$this->request->id}"), shouldOpenInNewTab: false)
+            ])
             ->getBroadcastMessage();
     }
+
 }
