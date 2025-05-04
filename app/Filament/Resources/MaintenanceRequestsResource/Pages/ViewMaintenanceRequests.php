@@ -3,7 +3,9 @@
 namespace App\Filament\Resources\MaintenanceRequestsResource\Pages;
 
 use Filament\Actions;
+use App\Enums\UserRole;
 use Filament\Forms\Form;
+use Filament\Actions\Action;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Image;
 use Filament\Forms\Components\Select;
@@ -13,17 +15,19 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Pages\ViewRecord;
 use Filament\Tables\Columns\ImageColumn;
-use Filament\Forms\Components\View; // استدعاء View Component
-use Filament\Forms\Components\FileUpload;
 
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\ImageUpload;
 use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\DateTimePicker;
 use App\Filament\Resources\MaintenanceRequestsResource;
+use Filament\Forms\Components\View; // استدعاء View Component
 
 class ViewMaintenanceRequests extends ViewRecord
 {
     protected static string $resource = MaintenanceRequestsResource::class;
+
+
 
     public function getTitle(): string
     {
@@ -39,8 +43,15 @@ class ViewMaintenanceRequests extends ViewRecord
     {
         return [
             Actions\EditAction::make()->label('تعديل'),
+            Action::make('back')
+                ->label('رجوع')
+                ->icon('heroicon-m-arrow-left')
+                ->url($this->getResource()::getUrl('index')),
         ];
     }
+
+
+
 
 
     protected function mutateFormDataBeforeFill(array $data): array
@@ -113,6 +124,13 @@ class ViewMaintenanceRequests extends ViewRecord
                 ]),
 
 
+            Section::make(' رسائل الى العميل ')
+                ->schema([
+
+                    Textarea::make('technician_messages')
+
+                        ->label('ارسال رسالة للعميل'),
+                ]),
 
 
             Section::make('ملاحظات المدير التنفيذي')
@@ -124,6 +142,14 @@ class ViewMaintenanceRequests extends ViewRecord
             Section::make('التكلفة والمرفقات')
                 ->schema([
                     TextInput::make('cost')->label('الكلفة النهائية')->prefix('$')->disabled(),
+                    FileUpload::make('solutionImages')
+                        ->label('تحميل الصور')
+                        ->image()
+                        ->multiple()
+                        ->directory('maintenance-requests-cost')
+                        ->hidden(fn() => UserRole::is('CLT')),
+                        // ->visible(fn() => UserRole::is('CLT')),
+
                 ]),
 
             Section::make('الصور المرفقة')

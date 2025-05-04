@@ -4,23 +4,54 @@ namespace App\Filament\Resources\MaintenanceRequestsResource\Pages;
 
 use App\Enums\UserRole;
 use Filament\Forms\Form;
+use Filament\Actions\Action;
+use Illuminate\Support\Facades\Auth;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Textarea;
 use Illuminate\Database\Eloquent\Model;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\FileUpload;
+
+
 use Filament\Resources\Pages\CreateRecord;
-use Illuminate\Support\Facades\Auth;
-
-
 use Filament\Forms\Components\DateTimePicker;
 use App\Filament\Resources\MaintenanceRequestsResource;
 
 
 class CreateMaintenanceRequests extends CreateRecord
 {
+
     protected static string $resource = MaintenanceRequestsResource::class;
+
+    public function getTitle(): string
+    {
+        return ' إضافة طلب صيانة ';
+    }
+
+    public function getBreadcrumb(): string
+    {
+        return 'إضافة';
+    }
+
+    protected function getFormActions(): array
+    {
+        return [
+            Action::make('create')
+                ->label('إرسال الطلب')
+                ->submit('create')
+                ->icon('heroicon-m-check'),
+
+            Action::make('createAnother')
+                ->label('إرسال وطلب جديد')
+                ->submit('createAnother'),
+
+            Action::make('cancel')
+                ->label('إلغاء')
+                ->url($this->getResource()::getUrl('index')),
+        ];
+    }
+
 
     private array $imagesToSave = [];
     private array $solutionImagesToSave = [];

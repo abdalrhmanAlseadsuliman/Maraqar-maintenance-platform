@@ -2,8 +2,10 @@
 
 namespace App\Filament\Resources\MaintenanceRequestsResource\Pages;
 
+use Filament\Actions;
 use App\Enums\UserRole;
 use Filament\Forms\Form;
+use Filament\Actions\Action;
 use App\Models\MaintenanceRequests;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Section;
@@ -19,8 +21,46 @@ use App\Notifications\NewMaintenanceRequestNotification;
 class EditMaintenanceRequests extends EditRecord
 {
     protected static string $resource = MaintenanceRequestsResource::class;
+
+
+    public function getTitle(): string
+    {
+        return 'تعديل الطلب';
+    }
+
+    public function getBreadcrumb(): string
+    {
+        return 'تعديل الطلب';
+    }
+
+    protected function getHeaderActions(): array
+    {
+        return [
+            Actions\ViewAction::make()->label('عرض الطلب'),
+            Actions\DeleteAction::make()->label('حذف'),
+        ];
+    }
+
+
+    protected function getFormActions(): array
+    {
+        return [
+            Action::make('save')
+                ->label('تحديث الطلب')
+                ->submit('save')
+                ->icon('heroicon-m-pencil'),
+
+            Action::make('cancel')
+                ->label('إلغاء')
+                ->url($this->getResource()::getUrl('index')),
+        ];
+    }
+
+
     private array $imagesToSave = [];
     private array $solutionImagesToSave = [];
+
+
 
     protected function mutateFormDataBeforeSave(array $data): array
     {
@@ -71,7 +111,8 @@ class EditMaintenanceRequests extends EditRecord
                     url: '/user/maintenance-requests/' . $record->id
                 ));
             }
-        }if ($user && $record->technician_messages) {
+        }
+        if ($user && $record->technician_messages) {
             $user->notify(new NewMaintenanceRequestNotification(
                 $record,
                 title: 'رسالة من الفني بخصوص طلب الصيانة رقم' . $record->id,
@@ -137,19 +178,23 @@ class EditMaintenanceRequests extends EditRecord
                         ->options(function () {
                             return [
                                 'نعتذر عميلنا العزيز عن خدمتك وذلك يتضح لنا بان المشكله ناتجه عن سوء استخدام' =>
-                                    'نعتذر عميلنا العزيز عن خدمتك وذلك يتضح لنا بان المشكله ناتجه عن سوء استخدام',
+                                'نعتذر عميلنا العزيز عن خدمتك وذلك يتضح لنا بان المشكله ناتجه عن سوء استخدام',
                                 'نعتذر عميلنا العزيز عن خدمتك لقد تم اجراء تعديل على الوحده مما اخل بعقد الضمان المتفق عليه' =>
-                                    'نعتذر عميلنا العزيز عن خدمتك لقد تم اجراء تعديل على الوحده مما اخل بعقد الضمان المتفق عليه',
+                                'نعتذر عميلنا العزيز عن خدمتك لقد تم اجراء تعديل على الوحده مما اخل بعقد الضمان المتفق عليه',
                                 'نفيدك عميلنا العزيز بانه تم استلام طلبكم وجاري مناقشته وتكليف الفني خلال 5 أيام عمل نرجوا الانتباه بانه سيتواصل معكم الفني الرجاء تنسيق الموعد المناسب للزياره وعدم الرد خلال 3 اتصالات للفني يلغى بعدها الطلب شاكرين لكن تعاونكم' =>
-                                    'نفيدك عميلنا العزيز بانه تم استلام طلبكم وجاري مناقشته وتكليف الفني خلال 5 أيام عمل نرجوا الانتباه بانه سيتواصل معكم الفني الرجاء تنسيق الموعد المناسب للزياره وعدم الرد خلال 3 اتصالات للفني يلغى بعدها الطلب شاكرين لكن تعاونكم',
+                                'نفيدك عميلنا العزيز بانه تم استلام طلبكم وجاري مناقشته وتكليف الفني خلال 5 أيام عمل نرجوا الانتباه بانه سيتواصل معكم الفني الرجاء تنسيق الموعد المناسب للزياره وعدم الرد خلال 3 اتصالات للفني يلغى بعدها الطلب شاكرين لكن تعاونكم',
                             ];
                         })
                         ->visible(fn($get) => $get('status') === 'rejected'),
                 ]),
-                Textarea::make('technician_messages')
-                ->required()
-                ->label('رسائل للعميل'),
 
+            Section::make(' رسائل الى العميل ')
+                ->schema([
+
+                    Textarea::make('technician_messages')
+                        ->required()
+                        ->label('ارسال رسالة للعميل'),
+                ]),
 
 
             Section::make('تفاصيل المشكلة')

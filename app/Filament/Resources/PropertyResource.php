@@ -42,15 +42,15 @@ class PropertyResource extends Resource
 
 
 
-    public static function getPluralLabel(): string
-    {
-        return 'العقارات';
-    }
+    // public static function getPluralLabel(): string
+    // {
+    //     return 'العقارات';
+    // }
 
-    public static function getModelLabel(): string
-    {
-        return 'عقار جديد';
-    }
+    // public static function getModelLabel(): string
+    // {
+    //     return 'عقار جديد';
+    // }
 
     public static function getNavigationLabel(): string
     {

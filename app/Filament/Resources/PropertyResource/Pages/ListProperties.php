@@ -13,7 +13,17 @@ class ListProperties extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\CreateAction::make()->label('إنشاء عقار جديد'),
+
         ];
+    }
+    public function getTitle(): string
+    {
+        return ' عقارات المؤسسة ';
+    }
+
+    public function getBreadcrumb(): string
+    {
+        return 'قائمة العقارات';
     }
 }

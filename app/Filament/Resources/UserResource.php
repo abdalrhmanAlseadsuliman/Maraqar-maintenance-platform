@@ -22,19 +22,9 @@ class UserResource extends Resource
     protected static ?int $navigationSort = 1;
 
 
-    public static function getPluralLabel(): string
-    {
-        return 'الزبائن';
-    }
-
-    public static function getModelLabel(): string
-    {
-        return 'زبون جديد';
-    }
-
     public static function getNavigationLabel(): string
     {
-        return 'إدارة الزبائن';
+        return 'إدارة العملاء';
     }
 
     public static function form(Form $form): Form

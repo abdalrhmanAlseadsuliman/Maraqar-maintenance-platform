@@ -26,10 +26,12 @@ class ListMaintenanceRequests extends ListRecords
     protected static string $resource = MaintenanceRequestsResource::class;
 
 
+
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\CreateAction::make()->label('إنشاء طلب صيانة'),
+
         ];
     }
     public function getTitle(): string
@@ -79,6 +81,9 @@ class ListMaintenanceRequests extends ListRecords
                     ->label('عرض'),
                 Tables\Actions\EditAction::make()
                     ->label('تعديل'),
+                Tables\Actions\DeleteAction::make()
+                    ->label('حذف'),
+
                 Action::make('exportPdf')
                     ->label('تصدير PDF')
                     ->color('primary')
