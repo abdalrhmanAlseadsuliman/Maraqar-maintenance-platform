@@ -34,7 +34,7 @@ class MaintenanceRequestObserver
             $admin->notify(new NewPushNotification(
                 'تم استقبال طلب جديد',
                 'تم استقبال طلب جديد',
-                '/admin/maintenance-requests/' . $request->id
+                url("/admin/maintenance-requests/{$request->id}")
             ));
 
         }
