@@ -1,0 +1,41 @@
+@media only screen and (min-width: 900px) {
+    html {
+        direction: rtl;
+        text-align: right;
+    }
+
+    تعديل الشريط الجانبي ليكون على اليمين
+    .filament-sidebar {
+        right: 0 !important;
+        left: auto !important;
+    }
+
+    تعديل محتوى الصفحة ليكون على اليسار
+    .filament-main {
+        margin-left: 0 !important;
+        margin-right: 16rem !important; /* تأكد من أن القيمة متناسبة مع حجم الـ sidebar */
+     } 
+
+   
+    .filament-header {
+        text-align: right !important;
+    } 
+
+ } 
+ .pointer-events-auto{
+    position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+
+}
+
+.fi-no-notification{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+} 
+
