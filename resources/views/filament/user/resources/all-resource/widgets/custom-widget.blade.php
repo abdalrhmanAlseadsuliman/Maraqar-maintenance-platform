@@ -1,79 +1,22 @@
 <x-filament-widgets::widget>
     <x-filament::section>
-        {{-- ✅ تضمين Swiper CSS من CDN --}}
-        <link
-            rel="stylesheet"
-            href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
-        />
-
-        <style>
-            .swiper {
-                width: 100%;
-                height: 300px;
-                border-radius: 1rem;
-                overflow: hidden;
-            }
-            .swiper-slide img {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-            }
-            .title{
-                margin-bottom: 10px;
-            }
-        </style>
-
-        {{-- ✅ السلايدر --}}
-        <body>
-        <div class=container-fluid>
-            <div class="title">
-            <h3>  تعليمات دليل الاستخدام </h3>
-        </div>
-
-
-
-        <div class="swiper mySwiper mt-4">
-            <div class="swiper-wrapper">
-                {{-- ✅ تكرار نفس الصورة للتجربة --}}
-                @for ($i = 0; $i < 5; $i++)
-                    <div class="swiper-slide">
-                        <img src="{{ asset('33.jpg') }}" alt="Slide {{ $i + 1 }}" />
-                    </div>
-                @endfor
+        <div class="p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200">
+            {{-- ✅ رأس القسم --}}
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-xl font-bold text-gray-800 dark:text-white">🎥 دليل الاستخدام </h3>
+                <a href="{{ route('filament.user.resources.maintenance-requests.create') }}"
+                   class="inline-flex items-center px-4 py-2 bg-primary-600 text-white text-sm font-medium rounded-md hover:bg-primary-700 transition">
+                    + إنشاء طلب صيانة
+                </a>
             </div>
 
-            {{-- ✅ أزرار التنقل --}}
-            <div class="swiper-button-next"></div>
-            <div class="swiper-button-prev"></div>
-
-            {{-- ✅ النقاط --}}
-            <div class="swiper-pagination"></div>
+            {{-- ✅ محتوى الفيديو --}}
+            <div class="rounded-xl overflow-hidden aspect-video border border-gray-300 shadow">
+                <video controls class="w-full h-full object-cover">
+                    <source src="{{ asset('videos/manual.mp4') }}" type="video/mp4">
+                    المتصفح لا يدعم تشغيل الفيديو.
+                </video>
+            </div>
         </div>
-    </div>
-</body>
-
-        {{-- ✅ تضمين Swiper JS من CDN --}}
-        <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-
-        {{-- ✅ تهيئة السلايدر --}}
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                new Swiper('.mySwiper', {
-                    loop: true,
-                    pagination: {
-                        el: '.swiper-pagination',
-                        clickable: true,
-                    },
-                    navigation: {
-                        nextEl: '.swiper-button-next',
-                        prevEl: '.swiper-button-prev',
-                    },
-                    autoplay: {
-                        delay: 3000,
-                        disableOnInteraction: false,
-                    },
-                });
-            });
-        </script>
     </x-filament::section>
 </x-filament-widgets::widget>

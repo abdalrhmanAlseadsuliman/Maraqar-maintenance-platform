@@ -103,7 +103,8 @@ class EditMaintenanceRequests extends EditRecord
                 $user->notify(new NewMaintenanceRequestNotification(
                     $record,
                     title: 'تم رفض طلب الصيانة رقم ' . $record->id,
-                    body: $record->status_message
+                    body: $record->status_message,
+                    url:'/user/maintenance-requests/'.$record->id
                 ));
                 $user->notify(new NewPushNotification(
                     title: 'تم رفض طلب الصيانة رقم ' . $record->id,
@@ -116,7 +117,8 @@ class EditMaintenanceRequests extends EditRecord
             $user->notify(new NewMaintenanceRequestNotification(
                 $record,
                 title: 'رسالة من الفني بخصوص طلب الصيانة رقم' . $record->id,
-                body: $record->status_message
+                body: $record->status_message,
+                url:'/user/maintenance-requests/'.$record->id
             ));
             $user->notify(new NewPushNotification(
                 title: 'رسالة من الفني بخصوص طلب الصيانة رقم ' . $record->id,

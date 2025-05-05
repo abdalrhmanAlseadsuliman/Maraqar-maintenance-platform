@@ -49,7 +49,7 @@ class ListMaintenanceRequests extends ListRecords
     public function table(Table $table): Table
     {
         return $table->columns([
-            TextColumn::make('property.owner.name')->sortable(),
+            TextColumn::make('property.owner.name')->sortable()->label('الاسم'),
             Tables\Columns\TextColumn::make('request_type')
                 ->label('نوع الطلب')
                 ->searchable()
@@ -66,9 +66,9 @@ class ListMaintenanceRequests extends ListRecords
                         default => $state,
                     };
                 }),
-                TextColumn::make('submitted_at')->label('تاريخ الارسال')->dateTime()->sortable(),
+            TextColumn::make('submitted_at')->label('تاريخ الارسال')->dateTime()->sortable(),
 
-            TextColumn::make('technician_name')->label( 'تاريخ الارسال')->searchable(),
+            TextColumn::make('technician_name')->label('تاريخ الارسال')->searchable(),
             // TextColumn::make('executive_director_notes')->searchable(),
             TextColumn::make('cost')->money()->label('الكلفة')->sortable(),
 
@@ -78,7 +78,7 @@ class ListMaintenanceRequests extends ListRecords
                 ->width(80)
                 ->height(80)
                 ->getStateUsing(fn($record) => optional($record->images->first())->image_path ? asset('storage/' . $record->images->first()->image_path) : null),
-        ]) ->filters([
+        ])->filters([
             Filter::make('created_between')
                 ->form([
                     DatePicker::make('from')->label('من تاريخ'),
@@ -89,11 +89,23 @@ class ListMaintenanceRequests extends ListRecords
                         ->when($data['from'], fn($q) => $q->whereDate('created_at', '>=', $data['from']))
                         ->when($data['until'], fn($q) => $q->whereDate('created_at', '<=', $data['until']));
                 }),
-                SelectFilter::make('request_type')
+            SelectFilter::make('request_type')
                 ->label('نوع الطلب')
                 ->options(RequestType::getOptions())
                 ->attribute('request_type')
                 ->native(false),
+
+            SelectFilter::make('status')
+                ->label('حالة الطلب')
+                ->options([
+                    'pending' => 'تم الاستلام',
+                    'in_progress' => 'جاري العمل',
+                    'completed' => 'مكتمل',
+                    'rejected' => 'مرفوض',
+                ])
+                ->attribute('status')
+                ->native(false),
+
         ])
             ->actions([
                 Tables\Actions\ViewAction::make()
@@ -118,7 +130,7 @@ class ListMaintenanceRequests extends ListRecords
                         $mpdf->WriteHTML($html);
                         return response()->streamDownload(function () use ($mpdf) {
                             echo $mpdf->Output('', 'S');
-                        }, 'طلب صيانة' .$record->id. '.pdf');
+                        }, 'طلب صيانة' . $record->id . '.pdf');
                     }),
 
             ])
@@ -129,7 +141,7 @@ class ListMaintenanceRequests extends ListRecords
                     // ->visible(fn () => Auth::user()?->can('delete', MaintenanceRequests::first()))
 
                 ]),
-               
+
 
                 BulkAction::make('Export to PDF')
                     ->action(function ($records) {

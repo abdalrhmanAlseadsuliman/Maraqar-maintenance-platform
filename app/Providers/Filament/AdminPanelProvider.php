@@ -32,6 +32,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login(Login::class)
+            ->favicon(asset('white-logo.webp'))
             ->brandLogo(fn () => asset('white-logo.webp'))
             // ->layoutDirection('rtl')
             ->colors([
@@ -46,7 +47,7 @@ class AdminPanelProvider extends PanelProvider
             ->widgets([
                 Widgets\AccountWidget::class,
                 UserCountWidget::class,
-                
+
             ])
             ->middleware([
                 EncryptCookies::class,

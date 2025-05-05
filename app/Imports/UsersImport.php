@@ -37,7 +37,7 @@ class UsersImport implements ToCollection
                 $user = User::create([
                     'name' => $row[5],
                     'email' => $randomEmail, // استخدم البريد العشوائي هنا
-                    'password' => $row[2] ?? bcrypt('default_password'), // تأكد أن كلمة المرور صالحة
+                    'password' => $row[8] ?? bcrypt('default_password'), 
                     'phone' => $row[6] ?? null,
                 ]);
                 logger()->info("تم إنشاء المستخدم برقم ID: {$user->id}");

@@ -19,15 +19,22 @@ class MaintenanceRequestObserver
         // }
 
         foreach ($admins as $admin) {
+            // $admin->notify(new NewMaintenanceRequestNotification(
+            //     $request,
+            //     'تم استقبال طلب جديد',
+            //     'تم استقال طلب جديد رقم ' . $request->id,
+            // ));
             $admin->notify(new NewMaintenanceRequestNotification(
                 $request,
                 'تم استقبال طلب جديد',
                 'تم استقال طلب جديد رقم ' . $request->id,
+                url("/admin/maintenance-requests/{$request->id}") // <-- تم تمرير الرابط من هنا
             ));
+
             $admin->notify(new NewPushNotification(
                 'تم استقبال طلب جديد',
                 'تم استقبال طلب جديد',
-                '/user/maintenance-requests/' . $request->id
+                '/admin/maintenance-requests/' . $request->id
             ));
 
         }

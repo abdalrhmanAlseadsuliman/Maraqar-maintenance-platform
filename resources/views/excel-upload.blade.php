@@ -1,20 +1,19 @@
-
-
-
 {{-- resources/views/excel-upload.blade.php --}}
 <!DOCTYPE html>
 <html lang="ar">
+
 <head>
     <meta charset="UTF-8">
     <title>رفع ملف إكسل</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
+
 <body class="bg-gray-100 flex items-center justify-center min-h-screen">
 
     <div class="bg-white shadow-md p-6 rounded-lg w-full max-w-md">
         <h1 class="text-xl font-bold mb-4 text-center">رفع ملف إكسل</h1>
 
-        @if(session('success'))
+        @if (session('success'))
             <div class="bg-green-100 text-green-700 p-3 rounded mb-4">
                 {{ session('success') }}
             </div>
@@ -35,11 +34,18 @@
 
             <input type="file" name="file" class="block w-full mb-4 p-2 border rounded" required>
 
-            <button type="submit"
-                class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">
+            <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">
                 رفع الملف
             </button>
         </form>
+
+        <button type="" class="w-full bg-red-600 text-white py-1 mt-2 rounded hover:bg-red-700">
+            <a href="/admin"
+                class="filament-button bg-primary-600 hover:bg-primary-700 text-white block text-center py-2">
+                عودة
+            </a>
+        </button>
     </div>
 </body>
+
 </html>
