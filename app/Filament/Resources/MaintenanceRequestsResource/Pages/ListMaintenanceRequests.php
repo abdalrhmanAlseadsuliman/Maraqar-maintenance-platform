@@ -6,7 +6,10 @@ use Mpdf\Mpdf;
 use Filament\Tables;
 use Filament\Actions;
 use App\Enums\RequestType;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Filament\Tables\Filters\Filter;
+use Filament\Forms\Components\DatePicker;
 use App\Models\MaintenanceRequests;
 use Filament\Tables\Actions\Action;
 use Illuminate\Support\Facades\Auth;
@@ -75,6 +78,22 @@ class ListMaintenanceRequests extends ListRecords
                 ->width(80)
                 ->height(80)
                 ->getStateUsing(fn($record) => optional($record->images->first())->image_path ? asset('storage/' . $record->images->first()->image_path) : null),
+        ]) ->filters([
+            Filter::make('created_between')
+                ->form([
+                    DatePicker::make('from')->label('من تاريخ'),
+                    DatePicker::make('until')->label('إلى تاريخ'),
+                ])
+                ->query(function ($query, array $data) {
+                    return $query
+                        ->when($data['from'], fn($q) => $q->whereDate('created_at', '>=', $data['from']))
+                        ->when($data['until'], fn($q) => $q->whereDate('created_at', '<=', $data['until']));
+                }),
+                SelectFilter::make('request_type')
+                ->label('نوع الطلب')
+                ->options(RequestType::getOptions())
+                ->attribute('request_type')
+                ->native(false),
         ])
             ->actions([
                 Tables\Actions\ViewAction::make()
@@ -110,6 +129,7 @@ class ListMaintenanceRequests extends ListRecords
                     // ->visible(fn () => Auth::user()?->can('delete', MaintenanceRequests::first()))
 
                 ]),
+               
 
                 BulkAction::make('Export to PDF')
                     ->action(function ($records) {
