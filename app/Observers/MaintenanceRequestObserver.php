@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Observers;
 
 use App\Models\MaintenanceRequests;
@@ -36,7 +37,6 @@ class MaintenanceRequestObserver
                 'تم استقبال طلب جديد',
                 url("/admin/maintenance-requests/{$request->id}")
             ));
-
         }
     }
     public function edited(MaintenanceRequests $request)
