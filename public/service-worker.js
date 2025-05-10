@@ -10,8 +10,8 @@ self.addEventListener('push', function(event) {
 
         self.registration.showNotification(data.title || 'إشعار', {
             body: data.body || 'لا توجد تفاصيل',
-            icon:  'https://maintenance.maraqar.com/white-logo.webp',
-            badge: 'https://maintenance.maraqar.com/white-logo.webp',
+            icon:  'https://maintenance.maraqar.com/bglogo.jpeg',
+            badge: 'https://maintenance.maraqar.com/bglogo.jpeg',
             data: {
                 url: x || '/',
             },
