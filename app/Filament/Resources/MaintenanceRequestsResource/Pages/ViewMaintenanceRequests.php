@@ -22,6 +22,7 @@ use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\DateTimePicker;
 use App\Filament\Resources\MaintenanceRequestsResource;
 use Filament\Forms\Components\View; // استدعاء View Component
+use Illuminate\Support\Facades\Storage;
 
 class ViewMaintenanceRequests extends ViewRecord
 {
@@ -139,18 +140,11 @@ class ViewMaintenanceRequests extends ViewRecord
                         ->label('ملاحظات المدير التنفيذي'),
                 ]),
 
-            Section::make('التكلفة والمرفقات')
-                ->schema([
-                    TextInput::make('cost')->label('الكلفة النهائية')->prefix('$')->disabled(),
-                    FileUpload::make('solutionImages')
-                        ->label('تحميل الصور')
-                        ->image()
-                        ->multiple()
-                        ->directory('maintenance-requests-cost')
-                        ->hidden(fn() => UserRole::is('CLT')),
-                        // ->visible(fn() => UserRole::is('CLT')),
 
-                ]),
+
+
+
+
 
             Section::make('الصور المرفقة')
                 ->schema([
@@ -160,12 +154,14 @@ class ViewMaintenanceRequests extends ViewRecord
                             FileUpload::make('image_path')
                                 ->label('الصورة')
                                 ->image() // تحديد أن هذا ملف صورة
-                                ->disk('public') // تحديد مكان التخزين
+                                ->disk('public_direct') // تحديد مكان التخزين
                                 ->disabled() // منع التعديل
                                 ->previewable(true) // إظهار المعاينة
+
                         ]),
                 ])
-                ->columnSpanFull()
+                ->columnSpanFull(),
+
         ]);
     }
 }
