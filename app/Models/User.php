@@ -12,15 +12,15 @@ class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable,HasPushSubscriptions;
-    
- 
+
+
 
     /**
      * The attributes that are mass assignable.
      *
      * @var list<string>
      */
-    protected $fillable = ['name', 'phone', 'email','password', 'city', 'role'];
+    protected $fillable = ['name', 'phone', 'email','password', 'city', 'role', 'national_id'];
 
     public function properties()
     {

@@ -36,7 +36,7 @@ class AdminPanelProvider extends PanelProvider
             ->brandLogo(fn () => asset('white-logo.webp'))
             // ->layoutDirection('rtl')
             ->colors([
-                'primary' =>'#0D2B48',
+                'primary' => Color::Amber,
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')

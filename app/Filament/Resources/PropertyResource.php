@@ -2,19 +2,6 @@
 
 
 namespace App\Filament\Resources;
-// namespace App\Filament\Resources;
-
-// use Filament\Forms;
-// use Filament\Tables;
-// use App\Models\Property;
-// use Filament\Forms\Form;
-// use Filament\Tables\Table;
-// use Filament\Resources\Resource;
-// use Illuminate\Support\Facades\Auth;
-// use Illuminate\Database\Eloquent\Builder;
-// use App\Filament\Resources\PropertyResource\Pages;
-// use Illuminate\Database\Eloquent\SoftDeletingScope;
-// use App\Filament\Resources\PropertyResource\RelationManagers;
 
 use Filament\Forms;
 use Filament\Tables;
@@ -41,16 +28,12 @@ class PropertyResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-building-office-2';
 
 
+    public static function getPluralLabel(): string
+    {
+        return ' العقارات' ;
+    }
 
-    // public static function getPluralLabel(): string
-    // {
-    //     return 'العقارات';
-    // }
 
-    // public static function getModelLabel(): string
-    // {
-    //     return 'عقار جديد';
-    // }
 
     public static function getNavigationLabel(): string
     {

@@ -121,10 +121,6 @@ class CreateMaintenanceRequests extends CreateRecord
                         ->default('pending')
                         ->disabled()
                         ->required(),
-
-                    DateTimePicker::make('submitted_at')
-                        ->label('تاريخ الإرسال')
-                        ->required(),
                 ]),
 
             Section::make('تفاصيل المشكلة')

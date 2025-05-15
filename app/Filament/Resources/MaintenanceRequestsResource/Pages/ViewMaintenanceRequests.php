@@ -83,7 +83,7 @@ class ViewMaintenanceRequests extends ViewRecord
 
                     Textarea::make('status_message')->label('رسالة الرفض')->disabled(),
 
-                    DateTimePicker::make('submitted_at')->label('تاريخ الإرسال')->disabled(),
+                    DateTimePicker::make('created_at')->label('تاريخ الإرسال')->disabled(),
                 ]),
 
             Section::make('تفاصيل المشكلة')
@@ -125,6 +125,16 @@ class ViewMaintenanceRequests extends ViewRecord
                 ]),
 
 
+            Section::make(' رسائل من الفني الى العميل ')
+                ->schema([
+
+                    Textarea::make('technician_messages')
+                        ->required()
+                        ->label('ارسال رسالة للعميل')
+                        ->disabled(),
+                ]),
+
+
             Section::make(' رسائل الى العميل ')
                 ->schema([
 
@@ -142,8 +152,21 @@ class ViewMaintenanceRequests extends ViewRecord
 
 
 
+            Section::make('مرفقات الفني')
+                ->schema([
+                    Repeater::make('solutionImages')
+                        ->relationship('solutionImages') // جلب الصور من العلاقة
+                        ->schema([
+                            FileUpload::make('image_path')
+                                ->label('الصورة')
+                                ->image() // تحديد أن هذا ملف صورة
+                                ->disk('public_direct') // تحديد مكان التخزين
+                                ->disabled() // منع التعديل
+                                ->previewable(true) // إظهار المعاينة
 
-
+                        ]),
+                ])
+                ->columnSpanFull(),
 
 
             Section::make('الصور المرفقة')
@@ -161,6 +184,8 @@ class ViewMaintenanceRequests extends ViewRecord
                         ]),
                 ])
                 ->columnSpanFull(),
+
+
 
         ]);
     }

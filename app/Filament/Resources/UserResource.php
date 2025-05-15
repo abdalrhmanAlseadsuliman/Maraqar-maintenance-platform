@@ -22,6 +22,15 @@ class UserResource extends Resource
     protected static ?int $navigationSort = 1;
 
 
+    public static function getPluralLabel(): string
+    {
+        return 'العملاء' ;
+    }
+
+
+
+   
+
     public static function getNavigationLabel(): string
     {
         return 'إدارة العملاء';
@@ -40,6 +49,10 @@ class UserResource extends Resource
                     ->email()
                     ->required()
                     ->maxLength(255),
+                Forms\Components\TextInput::make('national_id')
+                    ->label('السجل المدني')
+                    ->required()
+                    ->maxLength(15),
                 Forms\Components\TextInput::make('phone')
                     ->label('الهاتف')
                     ->tel()
@@ -47,7 +60,7 @@ class UserResource extends Resource
                     ->maxLength(255)
                     ->default('0994423464'),
                 Forms\Components\DateTimePicker::make('email_verified_at')
-                ->label('تاكيد الايميل'),
+                    ->label('تاكيد الايميل'),
                 Forms\Components\TextInput::make('password')
                     ->label('كلمة المرور')
                     ->password()
@@ -89,7 +102,7 @@ class UserResource extends Resource
                     ->label('المدينة')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('role')
-                ->label('مهام المستخدم'),
+                    ->label('مهام المستخدم'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -104,9 +117,9 @@ class UserResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make()
-                ->label('عرض'),
+                    ->label('عرض'),
                 Tables\Actions\EditAction::make()
-                ->label('تعديل'),
+                    ->label('تعديل'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

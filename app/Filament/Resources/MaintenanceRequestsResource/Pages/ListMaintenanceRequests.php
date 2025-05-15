@@ -66,9 +66,9 @@ class ListMaintenanceRequests extends ListRecords
                         default => $state,
                     };
                 }),
-            TextColumn::make('submitted_at')->label('تاريخ الارسال')->dateTime()->sortable(),
+            TextColumn::make('created_at')->label('تاريخ الارسال')->dateTime()->sortable(),
 
-            TextColumn::make('technician_name')->label('تاريخ الارسال')->searchable(),
+            TextColumn::make('technician_name')->label('اسم الفني')->searchable(),
             // TextColumn::make('executive_director_notes')->searchable(),
             TextColumn::make('cost')->money()->label('الكلفة')->sortable(),
 
