@@ -12,7 +12,9 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 function subscribeUserToPush(registration) {
-    const publicKey = "BGUzCrfprnPvGXVNj8cn5RJiieMffWb4DGAUYrMFc22FPaysfEaU1yAJd-_kjs_5zWBMVThsYrHTBtuoupbFlXQ"; // ضع هنا VAPID_PUBLIC_KEY من .env
+
+    const publicKey = "BGUzCrfprnPvGXVNj8cn5RJiieMffWb4DGAUYrMFc22FPaysfEaU1yAJd-_kjs_5zWBMVThsYrHTBtuoupbFlXQ"; // استضافة
+    // const publicKey = "BMaC1WKqfmIzHNsuqLky-sNJe-Z1BllvriuWPhYkr0XRMqzdUk_vhofkrEg6BtRFvmgYXaYonEUp9eDarq1vzyI"; // لوكال
 
     registration.pushManager.subscribe({
         userVisibleOnly: true,

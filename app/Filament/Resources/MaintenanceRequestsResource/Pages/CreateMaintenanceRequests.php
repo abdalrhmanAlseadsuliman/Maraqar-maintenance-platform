@@ -105,8 +105,15 @@ class CreateMaintenanceRequests extends CreateRecord
             Section::make('معلومات الطلب')
                 ->schema([
                     Select::make('property_id')
-                        ->relationship('property', 'name')
                         ->label('اختر العقار')
+                        ->options(function () {
+                            return \App\Models\Property::with('owner')->get()->mapWithKeys(function ($property) {
+                                return [
+                                    $property->id => $property->name . ' - ' . ($property->owner->name ?? 'غير معروف'),
+                                ];
+                            });
+                        })
+                        ->searchable()
                         ->required(),
 
                     Select::make('request_type')
