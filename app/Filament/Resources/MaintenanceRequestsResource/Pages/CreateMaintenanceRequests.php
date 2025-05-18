@@ -167,6 +167,7 @@ class CreateMaintenanceRequests extends CreateRecord
                         ->label('تحميل الصور')
                         ->image()
                         ->multiple()
+                        ->disk('public_direct')
                         ->directory('maintenance-requests')
                         ->required(),
                 ]),
@@ -183,6 +184,7 @@ class CreateMaintenanceRequests extends CreateRecord
                         ->label('تحميل الصور')
                         ->image()
                         ->multiple()
+                        ->disk('public_direct') 
                         ->directory('maintenance-requests-cost')
                         ->required(),
                 ])->visible(fn() => UserRole::is('MT')),

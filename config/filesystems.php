@@ -47,6 +47,7 @@ return [
             'report' => false,
         ],
 
+        
         'public_direct' => [
             'driver' => 'local',
             'root' => public_path('storage'),

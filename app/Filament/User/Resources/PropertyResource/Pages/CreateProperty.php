@@ -10,8 +10,16 @@ use Filament\Notifications\Notification;
 
 class CreateProperty extends CreateRecord
 {
-    protected static string $resource = PropertyResource::class;
+protected static string $resource = PropertyResource::class;
 
-    protected static ?string $title = 'إضافة عقار جديد';
-    
+public function getTitle(): string
+{
+return ' إضافة عقار جديد ';
 }
+
+public function getBreadcrumb(): string
+{
+return 'إضافة';
+}
+}
+

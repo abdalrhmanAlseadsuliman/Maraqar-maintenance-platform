@@ -74,7 +74,7 @@ class ListMaintenanceRequests extends ListRecords
 
             ImageColumn::make('images')
                 ->label('الصور')
-                ->disk('public')
+                ->disk('public_direct')
                 ->width(80)
                 ->height(80)
                 ->getStateUsing(fn($record) => optional($record->images->first())->image_path ? asset('storage/' . $record->images->first()->image_path) : null),
