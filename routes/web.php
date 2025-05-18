@@ -10,7 +10,7 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Log;
 
 Route::get('/', function () {
-    return view('welcome');
+    return  redirect('https://maraqar.com');;
 });
 
 // حفظ اشتراك المستخدم في الإشعارات
@@ -37,7 +37,7 @@ Route::get('/send-notification', function () {
 //     })->name('upload.file');
 // });
 
-// 
+//
 Route::get('/excel-upload', function () {
     return view('excel-upload'); // تأكد من اسم الملف
 });

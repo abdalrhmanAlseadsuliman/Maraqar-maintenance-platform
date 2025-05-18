@@ -102,7 +102,7 @@ class ViewMaintenanceRequests extends ViewRecord
                             FileUpload::make('image_path')
                                 ->label('الصورة')
                                 ->image() // تحديد أن هذا ملف صورة
-                                ->disk('public') // تحديد مكان التخزين
+                                ->disk('public_direct') // تحديد مكان التخزين
                                 ->disabled() // منع التعديل
                                 ->previewable(true) // إظهار المعاينة
                         ]),

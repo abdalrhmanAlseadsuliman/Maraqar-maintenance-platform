@@ -9,6 +9,7 @@ use App\Models\MaintenanceRequestImages;
 use App\Enums\RequestType;
 use Filament\Notifications\Notification;
 
+use Illuminate\Support\Facades\Storage;
 
 
 class MaintenanceRequests extends Model
@@ -41,4 +42,16 @@ class MaintenanceRequests extends Model
         return $this->hasMany(MaintenanceSolutionImages::class, 'maintenance_request_id');
     }
 
+    protected static function booted()
+    {
+        static::deleting(function ($request) {
+            foreach ($request->images as $image) {
+                if ($image->image_path && Storage::disk('public_direct')->exists($image->image_path)) {
+                    Storage::disk('public_direct')->delete($image->image_path);
+                }
+
+                $image->delete();
+            }
+        });
+    }
 }
