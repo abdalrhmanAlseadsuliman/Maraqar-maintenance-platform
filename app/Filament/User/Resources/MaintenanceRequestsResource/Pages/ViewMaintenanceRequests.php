@@ -37,12 +37,12 @@ class ViewMaintenanceRequests extends ViewRecord
         return 'عرض الطلب';
     }
 
-    protected function getHeaderActions(): array
-    {
-        return [
-            Actions\EditAction::make()->label('تعديل'),
-        ];
-    }
+    // protected function getHeaderActions(): array
+    // {
+    //     return [
+    //         Actions\EditAction::make()->label('تعديل'),
+    //     ];
+    // }
 
     public function form(Form $form): Form
     {
@@ -91,23 +91,6 @@ class ViewMaintenanceRequests extends ViewRecord
 
 
 
-
-
-
-            // Section::make('الصور المرفقة')
-            //     ->schema([
-            //         Repeater::make('images')
-            //             ->relationship('images') // جلب الصور من العلاقة
-            //             ->schema([
-            //                 FileUpload::make('image_path')
-            //                     ->label('الصورة')
-            //                     ->image() // تحديد أن هذا ملف صورة
-            //                     ->disk('public_direct') // تحديد مكان التخزين
-            //                     ->disabled() // منع التعديل
-            //                     ->previewable(true) // إظهار المعاينة
-            //             ]),
-            //     ])
-            //     ->columnSpanFull()
             Section::make('الصور المرفقة')
                 ->schema([
                     Repeater::make('images')
