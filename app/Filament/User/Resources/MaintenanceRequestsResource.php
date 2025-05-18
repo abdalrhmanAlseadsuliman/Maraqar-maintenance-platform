@@ -64,12 +64,12 @@ class MaintenanceRequestsResource extends Resource
                 Tables\Columns\TextColumn::make('created_at')->dateTime()->sortable()->label(' تاريخ تقديم الطلب ')->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')->dateTime()->sortable()->label('تاريخ تعديل الطلب')->toggleable(isToggledHiddenByDefault: true),
                 RatingColumn::make('rating')
-    ->label('تقييم')
-    ->sortable()
-    ->alignCenter(),
+                    ->label('تقييم')
+                    ->sortable()
+                    ->alignCenter(),
                 ImageColumn::make('images')
                     ->label('الصور')
-                    ->disk('public')
+                    ->disk('public_direct')
                     ->width(80)
                     ->height(80)
                     ->getStateUsing(fn($record) => optional($record->images->first())->image_path ? asset('storage/' . $record->images->first()->image_path) : null),
@@ -79,24 +79,24 @@ class MaintenanceRequestsResource extends Resource
                 Tables\Actions\ViewAction::make()->label('عرض'),
                 Tables\Actions\EditAction::make()->label('تقييم')->visible(fn(?MaintenanceRequests $record) => $record?->status === 'completed'),
             ])
-            ;
-            // ->bulkActions([
-            //     Tables\Actions\BulkActionGroup::make([
-            //         Tables\Actions\DeleteBulkAction::make()
-            //             ->visible(fn() => Auth::user()->can('delete', MaintenanceRequests::class)),
-            //     ]),
-            //     BulkAction::make('Export to PDF')
-            //         ->action(function ($records) {
-            //             $html = Blade::render('pdf-bulk', ['records' => $records]);
-            //             $mpdf = new Mpdf([
-            //                 'mode' => 'utf-8',
-            //                 'format' => 'A4',
-            //                 'default_font' => 'dejavusans',
-            //             ]);
-            //             $mpdf->WriteHTML($html);
-            //             return response()->streamDownload(fn() => print($mpdf->Output('', 'S')), 'maintenance-requests.pdf');
-            //         }),
-            // ]);
+        ;
+        // ->bulkActions([
+        //     Tables\Actions\BulkActionGroup::make([
+        //         Tables\Actions\DeleteBulkAction::make()
+        //             ->visible(fn() => Auth::user()->can('delete', MaintenanceRequests::class)),
+        //     ]),
+        //     BulkAction::make('Export to PDF')
+        //         ->action(function ($records) {
+        //             $html = Blade::render('pdf-bulk', ['records' => $records]);
+        //             $mpdf = new Mpdf([
+        //                 'mode' => 'utf-8',
+        //                 'format' => 'A4',
+        //                 'default_font' => 'dejavusans',
+        //             ]);
+        //             $mpdf->WriteHTML($html);
+        //             return response()->streamDownload(fn() => print($mpdf->Output('', 'S')), 'maintenance-requests.pdf');
+        //         }),
+        // ]);
     }
 
     public static function getEloquentQuery(): Builder
@@ -121,7 +121,3 @@ class MaintenanceRequestsResource extends Resource
         ];
     }
 }
-
-
-
-

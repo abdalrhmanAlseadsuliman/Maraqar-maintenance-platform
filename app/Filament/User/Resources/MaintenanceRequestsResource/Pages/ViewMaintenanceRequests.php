@@ -94,6 +94,20 @@ class ViewMaintenanceRequests extends ViewRecord
 
 
 
+            // Section::make('الصور المرفقة')
+            //     ->schema([
+            //         Repeater::make('images')
+            //             ->relationship('images') // جلب الصور من العلاقة
+            //             ->schema([
+            //                 FileUpload::make('image_path')
+            //                     ->label('الصورة')
+            //                     ->image() // تحديد أن هذا ملف صورة
+            //                     ->disk('public_direct') // تحديد مكان التخزين
+            //                     ->disabled() // منع التعديل
+            //                     ->previewable(true) // إظهار المعاينة
+            //             ]),
+            //     ])
+            //     ->columnSpanFull()
             Section::make('الصور المرفقة')
                 ->schema([
                     Repeater::make('images')
@@ -107,7 +121,7 @@ class ViewMaintenanceRequests extends ViewRecord
                                 ->previewable(true) // إظهار المعاينة
                         ]),
                 ])
-                ->columnSpanFull()
+                ->columnSpanFull(),
 
         ]);
     }
