@@ -50,11 +50,13 @@ class Login extends BaseLogin
         return TextInput::make('password')
             ->label('كلمة المرور')
             ->placeholder('أدخل كلمة المرور')
+            ->helperText('🔒 في حال لم تقم بتغييرها، فإن كلمة المرور هي رقم البطاقة.')
             ->password()
             ->required()
             ->autocomplete('current-password')
             ->extraInputAttributes(['tabindex' => 2]);
     }
+
 
     // مكون خيار "تذكرني"
     protected function getRememberFormComponent(): Checkbox

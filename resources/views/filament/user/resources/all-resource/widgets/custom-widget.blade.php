@@ -8,15 +8,19 @@
                    class="inline-flex items-center px-4 py-2 bg-primary-600 text-white text-sm font-medium rounded-md hover:bg-primary-700 transition">
                     + إنشاء طلب صيانة
                 </a>
+
             </div>
 
+            <br>
+
             {{-- ✅ محتوى الفيديو --}}
-            <div class="rounded-xl overflow-hidden aspect-video border border-gray-300 shadow">
-                <video controls class="w-full h-full object-cover">
-                    <source src="{{ asset('videos/manual.mp4') }}" type="video/mp4">
+            <div class="rounded-xl overflow-hidden aspect-video border border-gray-300 shadow flex items-center justify-center">
+                <video controls class="object-contain w-full h-full" style="height: 900px ">
+                    <source src="{{ asset('storage/how_to_submit_maintenance_request.mp4') }}" type="video/mp4">
                     المتصفح لا يدعم تشغيل الفيديو.
                 </video>
             </div>
+
         </div>
     </x-filament::section>
 </x-filament-widgets::widget>
