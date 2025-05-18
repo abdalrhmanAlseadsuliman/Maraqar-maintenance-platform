@@ -137,11 +137,15 @@ class EditMaintenanceRequests extends EditRecord
         return $form->schema([
             Section::make('معلومات الطلب')
                 ->schema([
-                    Select::make('property_id')
-                        ->relationship('property', 'name')
-                        ->label('اختر العقار')
-                        ->required()
-                        ->disabled(),
+                    TextInput::make('property_display')
+                        ->label('العقار')
+                        ->disabled()
+                        ->dehydrated(false)
+                        ->formatStateUsing(function ($state, $record) {
+                            return $record && $record->property
+                                ? $record->property->name . ' - ' . ($record->property->owner->name ?? 'غير معروف')
+                                : 'غير محدد';
+                        }),
 
                     Select::make('request_type')
                         ->required()

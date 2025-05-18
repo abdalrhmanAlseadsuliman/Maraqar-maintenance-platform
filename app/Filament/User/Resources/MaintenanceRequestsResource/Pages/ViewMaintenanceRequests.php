@@ -49,7 +49,18 @@ class ViewMaintenanceRequests extends ViewRecord
         return $form->schema([
             Section::make('معلومات الطلب')
                 ->schema([
-                    TextInput::make('property_id')->label('العقار')->disabled(),
+                    // TextInput::make('property_id')->label('العقار')->disabled(),
+
+                    TextInput::make('property_display')
+                        ->label('العقار')
+                        ->disabled()
+                        ->dehydrated(false)
+                        ->formatStateUsing(function ($state, $record) {
+                            return $record && $record->property
+                                ? $record->property->name . ' - ' . ($record->property->owner->name ?? 'غير معروف')
+                                : 'غير محدد';
+                        }),
+
                     TextInput::make('request_type')->label('نوع الطلب')->disabled(),
                     Select::make('status')
                         ->label('حالة الطلب')
