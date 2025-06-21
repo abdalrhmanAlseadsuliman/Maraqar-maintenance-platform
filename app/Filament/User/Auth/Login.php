@@ -52,6 +52,7 @@ class Login extends BaseLogin
             ->placeholder('أدخل كلمة المرور')
             ->helperText('🔒 في حال لم تقم بتغييرها، فإن كلمة المرور هي رقم البطاقة.')
             ->password()
+            ->revealable()
             ->required()
             ->autocomplete('current-password')
             ->extraInputAttributes(['tabindex' => 2]);
