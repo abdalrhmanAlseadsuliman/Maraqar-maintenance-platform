@@ -10,32 +10,35 @@ use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
 use Illuminate\Database\Eloquent\Builder;
-use App\Filament\Resources\UserResource\Pages;
+use App\Filament\Resources\AdminUserResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\UserResource\RelationManagers;
 
-class UserResource extends Resource
+class AdminUserResource extends Resource
 {
     protected static ?string $model = User::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-users';
+    protected static ?string $navigationIcon = 'heroicon-o-shield-check';
     protected static ?int $navigationSort = 1;
-
 
     public static function getPluralLabel(): string
     {
-        return 'العملاء' ;
+        return 'الإدارة والموظفين';
     }
-
 
     public static function getNavigationLabel(): string
     {
-        return 'إدارة العملاء';
+        return 'إدارة الموظفين';
     }
 
-     public static function getEloquentQuery(): Builder
+    public static function getModelLabel(): string
     {
-        return parent::getEloquentQuery()->where('role', UserRole::CLIENT);
+        return 'موظف';
+    }
+
+    // تطبيق فلتر لعرض الإدارة والموظفين فقط (استبعاد العملاء)
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->where('role', '!=', UserRole::CLIENT);
     }
 
     public static function form(Form $form): Form
@@ -76,8 +79,13 @@ class UserResource extends Resource
                 Forms\Components\Select::make('role')
                     ->label('مهام المستخدم')
                     ->placeholder('اختر مهام المستخدم')
-                    // ->options(UserRole::all())
-                    ->options(UserRole::options())
+                    ->options([
+                        UserRole::CHAIRMAN => 'رئيس مجلس الإدارة',
+                        UserRole::EXECDIR => 'المدير التنفيذي',
+                        UserRole::ADMIN => 'مدير النظام',
+                        UserRole::ACCOUNTANT => 'محاسب',
+                        UserRole::MAINTTECH => 'فني صيانة',
+                    ])
                     ->native(false)
                     ->required(),
             ]);
@@ -96,36 +104,67 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('phone')
                     ->label('الهاتف')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('role')
+                    ->label('المنصب')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        UserRole::CHAIRMAN => 'danger',
+                        UserRole::EXECDIR => 'warning',
+                        UserRole::ADMIN => 'success',
+                        UserRole::ACCOUNTANT => 'info',
+                        UserRole::MAINTTECH => 'gray',
+                        default => 'gray',
+                    })
+                    ->formatStateUsing(fn (string $state): string => UserRole::label($state) ?? $state),
+                Tables\Columns\TextColumn::make('city')
+                    ->label('المدينة')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('email_verified_at')
                     ->label('تاكيد الايميل')
                     ->dateTime()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('city')
-                    ->label('المدينة')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('role')
-                    ->label('مهام المستخدم'),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label('تاريخ الإنشاء')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->label('تاريخ التحديث')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('role')
+                    ->label('المنصب')
+                    ->options([
+                        UserRole::CHAIRMAN => 'رئيس مجلس الإدارة',
+                        UserRole::EXECDIR => 'المدير التنفيذي',
+                        UserRole::ADMIN => 'مدير النظام',
+                        UserRole::ACCOUNTANT => 'محاسب',
+                        UserRole::MAINTTECH => 'فني صيانة',
+                    ]),
+                Tables\Filters\SelectFilter::make('city')
+                    ->label('المدينة')
+                    ->options([
+                        'homs' => 'حمص',
+                        'damascus' => 'دمشق',
+                        'aleppo' => 'حلب',
+                        'lattakia' => 'اللاذقية',
+                    ]),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make()
                     ->label('عرض'),
                 Tables\Actions\EditAction::make()
                     ->label('تعديل'),
+                Tables\Actions\DeleteAction::make()
+                    ->label('حذف'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->label('حذف المحدد'),
                 ]),
             ]);
     }
@@ -140,10 +179,10 @@ class UserResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListUsers::route('/'),
-            'create' => Pages\CreateUser::route('/create'),
-            'view' => Pages\ViewUser::route('/{record}'),
-            'edit' => Pages\EditUser::route('/{record}/edit'),
+            'index' => Pages\ListAdminUsers::route('/'),
+            'create' => Pages\CreateAdminUser::route('/create'),
+            'view' => Pages\ViewAdminUser::route('/{record}'),
+            'edit' => Pages\EditAdminUser::route('/{record}/edit'),
         ];
     }
 }

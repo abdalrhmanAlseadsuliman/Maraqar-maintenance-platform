@@ -1,20 +1,19 @@
 <?php
 
-namespace App\Filament\Resources\UserResource\Pages;
+namespace App\Filament\Resources\AdminUserResource\Pages;
 
+use App\Filament\Resources\AdminUserResource;
 use Filament\Actions;
-use Filament\Actions\Action;
-use App\Filament\Resources\UserResource;
 use Filament\Resources\Pages\EditRecord;
+use Filament\Actions\Action;
 
-class EditUser extends EditRecord
+class EditAdminUser extends EditRecord
 {
-    protected static string $resource = UserResource::class;
+    protected static string $resource = AdminUserResource::class;
 
-
-    public function getTitle(): string
+ public function getTitle(): string
     {
-        return 'تعديل بيانات العميل';
+        return 'تعديل بيانات الموظف';
     }
 
     public function getBreadcrumb(): string
@@ -27,7 +26,7 @@ class EditUser extends EditRecord
     {
         return [
             Action::make('save')
-                ->label('تحديث بيانات العميل')
+                ->label('تحديث بيانات الموظف')
                 ->submit('save')
                 ->icon('heroicon-m-pencil'),
 
@@ -40,7 +39,7 @@ class EditUser extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\ViewAction::make()->label('عرض بيانات العميل'),
+            Actions\ViewAction::make()->label('عرض'),
             Actions\DeleteAction::make()->label('حذف'),
         ];
     }
