@@ -69,6 +69,7 @@ class AdminUserResource extends Resource
                 Forms\Components\TextInput::make('password')
                     ->label('كلمة المرور')
                     ->password()
+                    ->revealable()
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('city')
@@ -144,14 +145,7 @@ class AdminUserResource extends Resource
                         UserRole::ACCOUNTANT => 'محاسب',
                         UserRole::MAINTTECH => 'فني صيانة',
                     ]),
-                Tables\Filters\SelectFilter::make('city')
-                    ->label('المدينة')
-                    ->options([
-                        'homs' => 'حمص',
-                        'damascus' => 'دمشق',
-                        'aleppo' => 'حلب',
-                        'lattakia' => 'اللاذقية',
-                    ]),
+
             ])
             ->actions([
                 Tables\Actions\ViewAction::make()
