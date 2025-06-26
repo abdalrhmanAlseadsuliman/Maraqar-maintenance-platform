@@ -1,5 +1,19 @@
 <x-filament-panels::page.simple heading='منصة مار عقار لطلبات الصيانة'>
 
+    <style>
+        .fi-simple-page .fi-logo {
+            /* width: 120px !important; */
+            height: 8rem !important;
+            margin-bottom: 1rem;
+        }
+
+        .fi-simple-page .fi-logo img {
+            /* max-width: 150px; */
+            height: auto;
+        }
+    </style>
+
+
     @if (filament()->hasRegistration())
         <x-slot name="subheading">
             {{ __('filament-panels::pages/auth/login.actions.register.before') }}
@@ -16,16 +30,13 @@
         {{ $this->form }}
 
         {{-- عرض أزرار الفورم --}}
-        <x-filament-panels::form.actions
-            :actions="$this->getCachedFormActions()"
-            :full-width="$this->hasFullWidthFormActions()"
-        />
+        <x-filament-panels::form.actions :actions="$this->getCachedFormActions()" :full-width="$this->hasFullWidthFormActions()" />
     </x-filament-panels::form>
 
     {{-- ✅ زر العودة للصفحة الرئيسية --}}
     <div style="text-align: center; margin-top: 1.5rem;">
         <a href="https://maraqar.com"
-           style="display: inline-block; padding: 10px 25px; background-color: #3b82f6; color: white; border-radius: 8px; text-decoration: none;">
+            style="display: inline-block; padding: 10px 25px; background-color: #3b82f6; color: white; border-radius: 8px; text-decoration: none;">
             العودة إلى الصفحة الرئيسية
         </a>
     </div>
