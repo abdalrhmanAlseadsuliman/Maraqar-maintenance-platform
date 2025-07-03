@@ -1,9 +1,9 @@
 const CACHE_NAME = 'filament-app-v1';
 const urlsToCache = [
-  '/',
+  '/admin',
   '/css/app.css',
   '/js/app.js',
-  '/images/icon-192x192.png'
+  '/images/white-logo.webp'
 ];
 
 self.addEventListener('install', event => {

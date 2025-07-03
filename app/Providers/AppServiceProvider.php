@@ -46,29 +46,88 @@ class AppServiceProvider extends ServiceProvider
 
         FilamentView::registerRenderHook(
             PanelsRenderHook::HEAD_END,
-            fn(): string => '
-                <meta name="viewport" content="width=device-width, initial-scale=1">
-                <meta name="theme-color" content="#000000">
-                <meta name="apple-mobile-web-app-capable" content="yes">
-                <meta name="apple-mobile-web-app-status-bar-style" content="default">
-                <meta name="apple-mobile-web-app-title" content="اسم موقعك">
-                <meta name="description" content="وصف موقعك">
-                <link rel="manifest" href="/manifest.json">
-                <link rel="icon" href="/images/icon-192x192.png">
-                <link rel="apple-touch-icon" href="/images/icon-192x192.png">
-                <script>
-                    if ("serviceWorker" in navigator) {
-                        window.addEventListener("load", () => {
-                            navigator.serviceWorker.register("/sw.js")
-                                .then(registration => console.log("SW registered"))
-                                .catch(error => console.log("SW registration failed"));
-                        });
-                    }
-                </script>
-            '
+            fn(): string => $this->getPWAMetaTags()
         );
 
+    }
 
+    private function getPWAMetaTags(): string
+    {
+        $currentPath = request()->path();
 
+        // تحديد نوع الصفحة والإعدادات المناسبة
+        if (str_starts_with($currentPath, 'admin')) {
+            return $this->getAdminPWAMeta();
+        } elseif (str_starts_with($currentPath, 'user')) {
+            return $this->getUserPWAMeta();
+        } else {
+            return $this->getMainPWAMeta();
+        }
+    }
+
+    private function getMainPWAMeta(): string
+    {
+        return '
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <meta name="theme-color" content="#000000">
+            <meta name="apple-mobile-web-app-capable" content="yes">
+            <meta name="apple-mobile-web-app-status-bar-style" content="default">
+            <meta name="apple-mobile-web-app-title" content="مار العقارية">
+            <meta name="description" content="منصة مار العقارية الرئيسية">
+            <link rel="manifest" href="/manifest.json">
+            <link rel="icon" href="/images/icon-192x192.png">
+            <link rel="apple-touch-icon" href="/images/icon-192x192.png">
+            <script>
+                if ("serviceWorker" in navigator) {
+                    window.addEventListener("load", () => {
+                        navigator.serviceWorker.register("/sw.js");
+                    });
+                }
+            </script>
+        ';
+    }
+
+    private function getAdminPWAMeta(): string
+    {
+        return '
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <meta name="theme-color" content="#1f2937">
+            <meta name="apple-mobile-web-app-capable" content="yes">
+            <meta name="apple-mobile-web-app-status-bar-style" content="default">
+            <meta name="apple-mobile-web-app-title" content="مار العقارية إدارة">
+            <meta name="description" content="لوحة تحكم الإدارة">
+            <link rel="manifest" href="/manifest-admin.json">
+            <link rel="icon" href="/images/icon-admin-192x192.png">
+            <link rel="apple-touch-icon" href="/images/icon-admin-192x192.png">
+            <script>
+                if ("serviceWorker" in navigator) {
+                    window.addEventListener("load", () => {
+                        navigator.serviceWorker.register("/sw-admin.js");
+                    });
+                }
+            </script>
+        ';
+    }
+
+    private function getUserPWAMeta(): string
+    {
+        return '
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <meta name="theme-color" content="#3b82f6">
+            <meta name="apple-mobile-web-app-capable" content="yes">
+            <meta name="apple-mobile-web-app-status-bar-style" content="default">
+            <meta name="apple-mobile-web-app-title" content="مار العقارية مستخدم">
+            <meta name="description" content="لوحة تحكم المستخدم">
+            <link rel="manifest" href="/manifest-user.json">
+            <link rel="icon" href="/images/icon-user-192x192.png">
+            <link rel="apple-touch-icon" href="/images/icon-user-192x192.png">
+            <script>
+                if ("serviceWorker" in navigator) {
+                    window.addEventListener("load", () => {
+                        navigator.serviceWorker.register("/sw-user.js");
+                    });
+                }
+            </script>
+        ';
     }
 }
