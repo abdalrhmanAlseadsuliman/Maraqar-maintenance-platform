@@ -96,7 +96,7 @@ class AppServiceProvider extends ServiceProvider
             <meta name="apple-mobile-web-app-status-bar-style" content="default">
             <meta name="apple-mobile-web-app-title" content="مار العقارية إدارة">
             <meta name="description" content="لوحة تحكم الإدارة">
-            <link rel="manifest" href="/manifest-admin.json">
+            <link rel="manifest" href="/manifest.json">
             <link rel="icon" href="/images/white-logo.webp">
             <link rel="apple-touch-icon" href="/images/white-logo.webp">
             <script>
