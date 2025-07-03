@@ -41,5 +41,12 @@ class UserRole
     {
         return Auth::check() && Auth::user()->role === $value;
     }
+
+
+   public static function all(): array
+{
+    return self::values();
+}
+
 }
 
