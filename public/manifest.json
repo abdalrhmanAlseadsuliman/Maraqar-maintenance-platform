@@ -1,11 +1,11 @@
 {
-  "name": "اسم موقعك",
-  "short_name": "اسم مختصر",
-  "description": "وصف موقعك",
-  "start_url": "/",
+  "name": "مار العقارية - لوحة الإدارة",
+  "short_name": "مار العقارية إدارة",
+  "description": "لوحة تحكم الإدارة",
+  "start_url": "/admin",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#000000",
+  "background_color": "#1f2937",
+  "theme_color": "#1f2937",
   "orientation": "portrait-primary",
   "icons": [
     {
@@ -16,3 +16,4 @@
     }
   ]
 }
+
