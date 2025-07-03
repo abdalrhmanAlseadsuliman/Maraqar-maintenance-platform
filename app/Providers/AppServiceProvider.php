@@ -41,6 +41,10 @@ class AppServiceProvider extends ServiceProvider
         ]);
         MaintenanceRequests::observe(MaintenanceRequestObserver::class);
 
+        Filament::registerRenderHook(
+            'head.start',
+            fn(): string => view('partials.manifest-meta')->render()
+        );
 
 
 
