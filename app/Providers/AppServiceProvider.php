@@ -75,8 +75,8 @@ class AppServiceProvider extends ServiceProvider
             <meta name="apple-mobile-web-app-title" content="مار العقارية">
             <meta name="description" content="منصة مار العقارية الرئيسية">
             <link rel="manifest" href="/manifest.json">
-            <link rel="icon" href="/images/Adidas-logo.png">
-            <link rel="apple-touch-icon" href="/images/Adidas-logo.png">
+            <link rel="icon" href="/images/logo1.png">
+            <link rel="apple-touch-icon" href="/images/logo1.png">
             <script>
                 if ("serviceWorker" in navigator) {
                     window.addEventListener("load", () => {
@@ -97,8 +97,8 @@ class AppServiceProvider extends ServiceProvider
             <meta name="apple-mobile-web-app-title" content="مار العقارية إدارة">
             <meta name="description" content="لوحة تحكم الإدارة">
             <link rel="manifest" href="/manifest.json">
-            <link rel="icon" href="/images/Adidas-logo.png">
-            <link rel="apple-touch-icon" href="/images/Adidas-logo.png">
+            <link rel="icon" href="/images/logo1.png">
+            <link rel="apple-touch-icon" href="/images/logo1.png">
             <script>
                 if ("serviceWorker" in navigator) {
                     window.addEventListener("load", () => {
@@ -119,8 +119,8 @@ class AppServiceProvider extends ServiceProvider
             <meta name="apple-mobile-web-app-title" content="مار العقارية مستخدم">
             <meta name="description" content="لوحة تحكم المستخدم">
             <link rel="manifest" href="/manifest-user.json">
-            <link rel="icon" href="/images/Adidas-logo.png">
-            <link rel="apple-touch-icon" href="/images/Adidas-logo.png">
+            <link rel="icon" href="/images/logo1.png">
+            <link rel="apple-touch-icon" href="/images/logo1.png">
             <script>
                 if ("serviceWorker" in navigator) {
                     window.addEventListener("load", () => {
