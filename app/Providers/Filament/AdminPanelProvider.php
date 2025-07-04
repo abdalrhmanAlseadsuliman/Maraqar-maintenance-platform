@@ -32,7 +32,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login(Login::class)
-            ->favicon(asset('/images/Adidas-logo.png'))
+            ->favicon(asset('logo.webp'))
             ->brandLogo(fn() => asset('white-logo.webp'))
             // ->layoutDirection('rtl')
             ->colors([
