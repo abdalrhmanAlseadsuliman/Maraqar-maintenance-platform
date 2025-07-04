@@ -3,7 +3,7 @@ const urlsToCache = [
   '/admin',
   '/css/app.css',
   '/js/app.js',
-  '/images/logo1.png'
+  '/images/Adidas-logo.png'
 ];
 
 self.addEventListener('install', event => {
