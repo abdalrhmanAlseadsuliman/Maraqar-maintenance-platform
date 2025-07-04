@@ -32,8 +32,8 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login(Login::class)
-            ->favicon(asset('white-logo.webp'))
-            ->brandLogo(fn () => asset('white-logo.webp'))
+            ->favicon(asset('/images/Adidas-logo.png'))
+            ->brandLogo(fn() => asset('white-logo.webp'))
             // ->layoutDirection('rtl')
             ->colors([
                 'primary' => Color::Amber,
@@ -59,8 +59,8 @@ class AdminPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
-            ])  ->databaseNotifications()
-                ->sidebarCollapsibleOnDesktop()
+            ])->databaseNotifications()
+            ->sidebarCollapsibleOnDesktop()
             ->authMiddleware([
                 FilamentAdminMiddleware::class,
                 Authenticate::class,
