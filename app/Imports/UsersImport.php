@@ -17,7 +17,7 @@ class UsersImport implements ToCollection
         $data = $rows->toArray();
 
 
-        $data = array_slice($data, 2);
+        $data = array_slice($data, 1);
 
 
         foreach ($data as $index => $row) {
@@ -37,7 +37,7 @@ class UsersImport implements ToCollection
                 $user = User::create([
                     'name' => $row[5],
                     'email' => $row[7],
-                    'national_id' => $row[8] ,
+                    'national_id' => $row[8],
                     'password' => $row[8] ?? bcrypt('default_password'),
                     'phone' => $row[6] ?? null,
                 ]);
@@ -59,7 +59,6 @@ class UsersImport implements ToCollection
         }
 
         logger()->info('Import completed successfully.');
-
     }
 
 

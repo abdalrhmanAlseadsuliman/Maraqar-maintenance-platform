@@ -72,11 +72,13 @@ class UserController extends Controller
     public function import(Request $request)
     {
       
+           ini_set('memory_limit', '512M');
+    ini_set('max_execution_time', 1800);
         Log::info('وصلنا إلى راوت import-excel');
     
-        // $request->validate([
-        //     'file' => 'required|mimes:xlsx,xls',
-        // ]);
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls',
+        ]);
     
         Log::info('وصلنا إلى راوت import-excel');
     
