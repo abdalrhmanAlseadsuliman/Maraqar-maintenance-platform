@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('name');
             $table->string('property_number');
-            $table->string('title_deed_number');
+            $table->string('title_deed_number')->unique();
             $table->string('land_piece_number');
             $table->string('plan_number');
             $table->date('sale_date')->nullable();
