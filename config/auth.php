@@ -41,6 +41,10 @@ return [
             'provider' => 'users',
             'remember' => true,
         ],
+        'users' => [
+            'driver' => 'national_id',
+            'provider' => 'users',
+        ],
     ],
 
     /*
@@ -64,6 +68,17 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => env('AUTH_MODEL', App\Models\User::class),
+        ],
+
+        'users' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\User::class,
+        ],
+
+        // Provider للإدمن
+        'admins' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\User::class, // أو User::class إذا كانوا في نفس الجدول
         ],
 
         // 'users' => [
@@ -95,6 +110,13 @@ return [
         'users' => [
             'provider' => 'users',
             'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+
+        'admins' => [
+            'provider' => 'admins',
+            'table' => 'password_reset_tokens',
             'expire' => 60,
             'throttle' => 60,
         ],
