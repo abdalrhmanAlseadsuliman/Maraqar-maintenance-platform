@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Providers\Filament;
+
 use App\Filament\User\Resources\AllResource\Widgets\CustomWidget;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
@@ -28,10 +29,11 @@ class UserPanelProvider extends PanelProvider
             ->id('user')
             ->path('user')
             ->favicon(asset('white-logo.webp'))
-            ->brandLogo(fn () => asset('white-logo.webp'))
+            ->brandLogo(fn() => asset('white-logo.webp'))
             ->login(Login::class)
             ->colors([
-                'primary' => Color::Amber,
+                // 'primary' => Color::Amber,
+                'primary' => '#3b82f6',
             ])
             ->discoverResources(in: app_path('Filament/User/Resources'), for: 'App\\Filament\\User\\Resources')
             ->discoverPages(in: app_path('Filament/User/Pages'), for: 'App\\Filament\\User\\Pages')
@@ -42,7 +44,7 @@ class UserPanelProvider extends PanelProvider
             ->widgets([
                 CustomWidget::class,
                 Widgets\AccountWidget::class,
-               
+
             ])
             ->middleware([
                 EncryptCookies::class,
@@ -54,10 +56,11 @@ class UserPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
-            ]) ->databaseNotifications()
+            ])->databaseNotifications()
             ->authMiddleware([
                 Authenticate::class,
-            ]);
+            ])
+            ->authGuard('users') // استخدام guard المخصص
+            ->login(Login::class);
     }
-
 }

@@ -1,5 +1,7 @@
 <?php
 
+
+
 // namespace App\Filament\User\Auth;
 
 // use Filament\Forms\Form;
@@ -173,18 +175,197 @@
 
 
 
+// namespace App\Filament\User\Auth;
+
+// use Filament\Forms\Form;
+// use Filament\Forms\Components\TextInput;
+// use Filament\Forms\Components\Checkbox;
+// use Filament\Pages\Auth\Login as BaseLogin;
+// use Illuminate\Validation\ValidationException;
+// use Illuminate\Support\Facades\Auth;
+
+// class Login extends BaseLogin
+// {
+//     // تحديد Guard المستخدم للمستخدمين العاديين
+//     protected static string $guard = 'users';
+
+//     // إعدادات العناوين والزر
+//     protected static ?string $title = 'تسجيل الدخول';
+//     protected ?string $heading = 'تسجيل الدخول';
+//     protected ?string $subheading = 'مرحباً بك، الرجاء إدخال رقم البطاقة الشخصية';
+//     protected ?string $submitButtonLabel = 'دخول';
+
+//     // تحديد القالب المستخدم
+//     protected static string $view = 'filament.pages.auth.login';
+
+//     // بناء نموذج تسجيل الدخول
+//     public function form(Form $form): Form
+//     {
+//         return $form
+//             ->schema([
+//                 $this->getCardIdFormComponent(),     // مكون إدخال رقم البطاقة الشخصية
+//                 $this->getRememberFormComponent(),   // مكون "تذكرني"
+//             ])
+//             ->statePath('data');
+//     }
+
+//     // مكون إدخال رقم البطاقة الشخصية
+//     protected function getCardIdFormComponent(): TextInput
+//     {
+//         return TextInput::make('national_id')
+//             ->label('رقم البطاقة الشخصية')
+//             ->placeholder('أدخل رقم البطاقة الشخصية')
+//             ->required()
+//             ->autofocus()
+//             ->autocomplete('username')
+//             ->numeric() // للتأكد من أن المدخل أرقام فقط
+//             ->minLength(9) // تحديد الحد الأدنى لطول الرقم (قم بتعديله حسب نظام بلدك)
+//             ->maxLength(15) // تحديد الحد الأقصى لطول الرقم (قم بتعديله حسب نظام بلدك)
+//             ->helperText('🆔 رقم البطاقة الشخصية الخاص بك')
+//             ->extraInputAttributes(['tabindex' => 1]);
+//     }
+
+//     // مكون خيار "تذكرني"
+//     protected function getRememberFormComponent(): Checkbox
+//     {
+//         return Checkbox::make('remember')
+//             ->label('تذكرني');
+//     }
+
+//     // طريقة استخراج بيانات تسجيل الدخول
+//     protected function getCredentialsFromFormData(array $data): array
+//     {
+//         // استخدام رقم البطاقة الشخصية لتسجيل الدخول
+//         return [
+//             'national_id' => $data['national_id'],
+//             'password' => $data['national_id'], // استخدام رقم البطاقة كـ password أيضاً
+//         ];
+//     }
+
+//     // تخصيص رسالة الخطأ عند فشل تسجيل الدخول
+//     protected function throwFailureValidationException(): never
+//     {
+//         throw ValidationException::withMessages([
+//             'data.card_id' => 'رقم البطاقة الشخصية غير صحيح أو غير مسجل في النظام.',
+//         ]);
+//     }
+// }
+
+
+
+
+// namespace App\Filament\User\Auth;
+
+// use Filament\Forms\Components\TextInput;
+// use Filament\Forms\Components\Checkbox;
+// use Filament\Forms\Form;
+// use Filament\Pages\Auth\Login as BaseLogin;
+// use Filament\Http\Responses\Auth\Contracts\LoginResponse;
+// use Illuminate\Validation\ValidationException;
+// use Illuminate\Support\Facades\Auth;
+// use App\Models\User;
+
+// class Login extends BaseLogin
+// {
+//     // تحديد Guard المستخدم للمستخدمين العاديين
+//     protected static string $guard = 'web';
+
+//     // إعدادات العناوين والزر
+//     protected static ?string $title = 'تسجيل الدخول';
+//     protected ?string $heading = 'تسجيل الدخول';
+//     protected ?string $subheading = 'مرحباً بك، الرجاء إدخال رقم البطاقة الشخصية';
+//     protected ?string $submitButtonLabel = 'دخول';
+
+//     // تحديد القالب المستخدم
+//     protected static string $view = 'filament.pages.auth.login';
+
+//     // بناء نموذج تسجيل الدخول
+//     public function form(Form $form): Form
+//     {
+//         return $form
+//             ->schema([
+//                 $this->getCardIdFormComponent(),     // مكون إدخال رقم البطاقة الشخصية
+//                 $this->getRememberFormComponent(),   // مكون "تذكرني"
+//             ])
+//             ->statePath('data');
+//     }
+
+//     // مكون إدخال رقم البطاقة الشخصية
+//     protected function getCardIdFormComponent(): TextInput
+//     {
+//         return TextInput::make('national_id')
+//             ->label('رقم البطاقة الشخصية')
+//             ->placeholder('أدخل رقم البطاقة الشخصية')
+//             ->required()
+//             ->autofocus()
+//             ->autocomplete('username')
+//             ->numeric() // للتأكد من أن المدخل أرقام فقط
+//             ->minLength(9) // تحديد الحد الأدنى لطول الرقم
+//             ->maxLength(15) // تحديد الحد الأقصى لطول الرقم
+//             ->helperText('🆔 رقم البطاقة الشخصية الخاص بك')
+//             ->extraInputAttributes(['tabindex' => 1])
+//             ->rules([
+//                 'required',
+//                 'numeric',
+//                 'exists:users,national_id', // للتأكد من وجود الرقم في قاعدة البيانات
+//             ])
+//             ->validationMessages([
+//                 'exists' => 'رقم البطاقة الشخصية غير مسجل في النظام.',
+//             ]);
+//     }
+
+//     // مكون خيار "تذكرني"
+//     protected function getRememberFormComponent(): Checkbox
+//     {
+//         return Checkbox::make('remember')
+//             ->label('تذكرني');
+//     }
+
+//     // تجاوز طريقة المصادقة لاستخدام الرقم الوطني فقط
+//     public function authenticate(): ?LoginResponse
+//     {
+//         $data = $this->form->getState();
+
+//         // البحث عن المستخدم باستخدام الرقم الوطني
+//         $user = User::where('national_id', $data['national_id'])->first();
+
+//         if (!$user) {
+//             $this->throwFailureValidationException();
+//         }
+
+//         // تسجيل دخول المستخدم مباشرة دون التحقق من كلمة المرور
+//         Auth::guard(static::$guard)->login($user, $data['remember'] ?? false);
+
+//         session()->regenerate();
+
+//         // إرجاع LoginResponse كما هو مطلوب
+//         return app(LoginResponse::class);
+//     }
+
+//     // تخصيص رسالة الخطأ عند فشل تسجيل الدخول
+//     protected function throwFailureValidationException(): never
+//     {
+//         throw ValidationException::withMessages([
+//             'data.national_id' => 'رقم البطاقة الشخصية غير صحيح أو غير مسجل في النظام.',
+//         ]);
+//     }
+// }
+
+
 namespace App\Filament\User\Auth;
 
-use Filament\Forms\Form;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Checkbox;
+use Filament\Forms\Form;
 use Filament\Pages\Auth\Login as BaseLogin;
+use Filament\Http\Responses\Auth\Contracts\LoginResponse;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 class Login extends BaseLogin
 {
-    // تحديد Guard المستخدم للمستخدمين العاديين
+    // استخدام guard مخصص للمستخدمين العاديين
     protected static string $guard = 'users';
 
     // إعدادات العناوين والزر
@@ -217,10 +398,18 @@ class Login extends BaseLogin
             ->autofocus()
             ->autocomplete('username')
             ->numeric() // للتأكد من أن المدخل أرقام فقط
-            ->minLength(9) // تحديد الحد الأدنى لطول الرقم (قم بتعديله حسب نظام بلدك)
-            ->maxLength(15) // تحديد الحد الأقصى لطول الرقم (قم بتعديله حسب نظام بلدك)
+            ->minLength(9) // تحديد الحد الأدنى لطول الرقم
+            ->maxLength(15) // تحديد الحد الأقصى لطول الرقم
             ->helperText('🆔 رقم البطاقة الشخصية الخاص بك')
-            ->extraInputAttributes(['tabindex' => 1]);
+            ->extraInputAttributes(['tabindex' => 1])
+            ->rules([
+                'required',
+                'numeric',
+                'exists:users,national_id', // للتأكد من وجود الرقم في قاعدة البيانات
+            ])
+            ->validationMessages([
+                'exists' => 'رقم البطاقة الشخصية غير مسجل في النظام.',
+            ]);
     }
 
     // مكون خيار "تذكرني"
@@ -230,21 +419,32 @@ class Login extends BaseLogin
             ->label('تذكرني');
     }
 
-    // طريقة استخراج بيانات تسجيل الدخول
-    protected function getCredentialsFromFormData(array $data): array
+    // تجاوز طريقة المصادقة لاستخدام الرقم الوطني فقط
+    public function authenticate(): ?LoginResponse
     {
-        // استخدام رقم البطاقة الشخصية لتسجيل الدخول
-        return [
-            'national_id' => $data['national_id'],
-            'password' => $data['national_id'], // استخدام رقم البطاقة كـ password أيضاً
-        ];
+        $data = $this->form->getState();
+
+        // البحث عن المستخدم باستخدام الرقم الوطني
+        $user = User::where('national_id', $data['national_id'])->first();
+
+        if (!$user) {
+            $this->throwFailureValidationException();
+        }
+
+        // تسجيل دخول المستخدم باستخدام guard المخصص
+        Auth::guard('users')->login($user, $data['remember'] ?? false);
+
+        session()->regenerate();
+
+        // إرجاع LoginResponse كما هو مطلوب
+        return app(LoginResponse::class);
     }
 
     // تخصيص رسالة الخطأ عند فشل تسجيل الدخول
     protected function throwFailureValidationException(): never
     {
         throw ValidationException::withMessages([
-            'data.card_id' => 'رقم البطاقة الشخصية غير صحيح أو غير مسجل في النظام.',
+            'data.national_id' => 'رقم البطاقة الشخصية غير صحيح أو غير مسجل في النظام.',
         ]);
     }
 }

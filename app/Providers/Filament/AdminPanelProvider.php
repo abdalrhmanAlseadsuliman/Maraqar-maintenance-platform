@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Providers\Filament;
+
 use App\Http\Middleware\FilamentAdminMiddleware;
 
 use Filament\Http\Middleware\Authenticate;
@@ -22,6 +23,7 @@ use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Filament\Notifications\Livewire\DatabaseNotifications;
 
+
 class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
@@ -36,7 +38,8 @@ class AdminPanelProvider extends PanelProvider
             ->brandLogo(fn() => asset('white-logo.webp'))
             // ->layoutDirection('rtl')
             ->colors([
-                'primary' => Color::Amber,
+                // 'primary' => Color::Amber,
+                'primary' => '#3b82f6',
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
@@ -64,6 +67,8 @@ class AdminPanelProvider extends PanelProvider
             ->authMiddleware([
                 FilamentAdminMiddleware::class,
                 Authenticate::class,
-            ]);
+            ])
+            ->authGuard('web') // استخدام guard الافتراضي
+            ->login(Login::class);
     }
 }
