@@ -24,7 +24,7 @@ class UserResource extends Resource
 
     public static function getPluralLabel(): string
     {
-        return 'العملاء' ;
+        return 'العملاء';
     }
 
 
@@ -33,7 +33,7 @@ class UserResource extends Resource
         return 'إدارة العملاء';
     }
 
-     public static function getEloquentQuery(): Builder
+    public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()->where('role', UserRole::CLIENT);
     }
@@ -91,8 +91,8 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->label('الاسم')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('email')
-                    ->label('الايميل')
+                Tables\Columns\TextColumn::make('national_id')
+                    ->label('السجل المدني')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('phone')
                     ->label('الهاتف')
