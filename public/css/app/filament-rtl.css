@@ -1,28 +1,41 @@
   @media only screen and (min-width: 900px) {
-    html {
-        direction: rtl;
-        text-align: right;
-    }
+      html {
+          direction: rtl;
+          text-align: right;
+      }
 
 
-    .filament-sidebar {
-        right: 0 !important;
-        left: auto !important;
-    }
+      .filament-sidebar {
+          right: 0 !important;
+          left: auto !important;
+      }
 
-    
-    .filament-main {
-        margin-left: 0 !important;
-        margin-right: 16rem !important; /* تأكد من أن القيمة متناسبة مع حجم الـ sidebar */
-     } 
 
-   
-    .filament-header {
-        text-align: right !important;
-    } 
+      .filament-main {
+          margin-left: 0 !important;
+          margin-right: 16rem !important;
+          /* تأكد من أن القيمة متناسبة مع حجم الـ sidebar */
+      }
 
- } 
- /* .pointer-events-auto{
+
+      .filament-header {
+          text-align: right !important;
+      }
+
+  }
+
+
+
+  .fi-ta-header-toolbar {
+      margin-left: 30px !important;
+      /* padding-right: 80px !important; */
+  }
+
+  .fi-badge {
+      margin-right: -20px !important;
+  }
+
+  /* .pointer-events-auto{
     position: fixed;
   top: 50%;
   left: 50%;
@@ -41,7 +54,7 @@
 
 
 
-/*
+  /*
 @media only screen and (min-width: 900px) {
     html {
         direction: rtl;
@@ -119,4 +132,3 @@
     z-index: 1;
 }
  */
-

@@ -1,28 +1,38 @@
   @media only screen and (min-width: 900px) {
-    html {
-        direction: rtl;
-        text-align: right;
-    }
+      html {
+          direction: rtl;
+          text-align: right;
+      }
 
 
-    .filament-sidebar {
-        right: 0 !important;
-        left: auto !important;
-    }
+      .filament-sidebar {
+          right: 0 !important;
+          left: auto !important;
+      }
 
-    
-    .filament-main {
-        margin-left: 0 !important;
-        margin-right: 16rem !important; /* تأكد من أن القيمة متناسبة مع حجم الـ sidebar */
-     } 
 
-   
-    .filament-header {
-        text-align: right !important;
-    } 
+      .filament-main {
+          margin-left: 0 !important;
+          margin-right: 20rem !important;
+          /* تأكد من أن القيمة متناسبة مع حجم الـ sidebar */
+      }
 
- } 
- /* .pointer-events-auto{
+
+
+
+  }
+
+  .filament-header {
+      text-align: right !important;
+  }
+
+  .fi-ta-header-toolbar .flex items-center .justify-between .gap-x-4 .px-4 .py-3 {
+      margin: 500px !important;
+      /* padding-right: 80px !important; */
+  }
+
+
+  /* .pointer-events-auto{
     position: fixed;
   top: 50%;
   left: 50%;
@@ -38,4 +48,3 @@
     transform: translate(-50%, -50%);
     z-index: 1;
 }  */
-

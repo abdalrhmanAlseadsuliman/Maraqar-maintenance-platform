@@ -14,6 +14,7 @@ use App\Models\MaintenanceRequests;
 use Filament\Tables\Actions\Action;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Blade;
+use Mokhosh\FilamentRating\Columns\RatingColumn;
 
 
 use Filament\Tables\Actions\BulkAction;
@@ -72,6 +73,10 @@ class ListMaintenanceRequests extends ListRecords
             // TextColumn::make('executive_director_notes')->searchable(),
             TextColumn::make('cost')->money()->label('الكلفة')->sortable(),
 
+            RatingColumn::make('rating')
+                ->label('تقييم')
+                ->sortable()
+                ->alignCenter(),
             ImageColumn::make('images')
                 ->label('الصور')
                 ->disk('public_direct')
