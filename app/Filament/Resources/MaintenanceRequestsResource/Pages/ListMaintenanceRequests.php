@@ -77,12 +77,12 @@ class ListMaintenanceRequests extends ListRecords
                 ->label('تقييم')
                 ->sortable()
                 ->alignCenter(),
-            ImageColumn::make('images')
-                ->label('الصور')
-                ->disk('public_direct')
-                ->width(80)
-                ->height(80)
-                ->getStateUsing(fn($record) => optional($record->images->first())->image_path ? asset('storage/' . $record->images->first()->image_path) : null),
+            // ImageColumn::make('images')
+            //     ->label('الصور')
+            //     ->disk('public_direct')
+            //     ->width(80)
+            //     ->height(80)
+            //     ->getStateUsing(fn($record) => optional($record->images->first())->image_path ? asset('storage/' . $record->images->first()->image_path) : null),
         ])->filters([
             Filter::make('created_between')
                 ->form([
